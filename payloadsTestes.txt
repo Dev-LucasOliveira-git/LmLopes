@@ -1,0 +1,65 @@
+{
+  "nome": "lucas",
+  "email": "lucas@gmail.com",
+  "telefone": "11968597298",
+  "endereco": "av senador vergueiro",
+  "cep": "09601900",
+  "cpfCnpj": "52293167801",
+  "bairro": "jd holywood",
+  "numero": "11968597298",
+  "complemento": "bl 15A apt 74"
+}
+
+
+{
+  "nome": "Victor Canuto",
+  "rg": "392730625",
+  "crea": "123456789"
+}
+
+
+{
+  "nome": "maquina de olhos",
+  "numeroSerie": "12356",
+  "tags": "teste"
+}
+
+
+{
+  "dataHora": "2024-07-27T04:05:58.450Z",
+  "numero": "123",
+  "numeroPrisma": "321",
+  "contato": "valerio",
+  "telefone": "11958339858",
+  "limpeza": true,
+  "ajuste": true,
+  "lubrificacao": true,
+  "obs": "teste obs",
+  "idUsuario": 0,
+  "idCliente": 1,
+  "idEngenheiro": 1,
+  "idEquipamento": 1,
+  "materiaisUtilizados": [
+    {
+      "descricao": "soldador",
+      "quantidade": 1,
+      "idOrdem": 0
+    }
+  ],
+  "atividade": {
+    "idOrdemServico": 0,
+    "preventiva": true,
+    "corretiva": true,
+    "instalalacao": true,
+    "movimentacao": true,
+    "outros": false
+  },
+  "defeito": {
+    "idOrdemServico": 0,
+    "eletrico": false,
+    "mecanico": false,
+    "optico": false,
+    "outros": true,
+    "obs": "encaixe"
+  }
+}
