@@ -39,7 +39,10 @@ namespace Dto.Mappings
 			   .ForMember(dest => dest.MateriaisUtilizados, opt => opt.MapFrom(src => src.MateriaisUtilizados))
 			   .ForMember(dest => dest.Atividade, opt => opt.MapFrom(src => src.Atividade))
 			   .ForMember(dest => dest.Defeito, opt => opt.MapFrom(src => src.Defeito));
-			   
+
+			CreateMap<OrdemServicoSimplesPoco, OrdemServicoSimplesDTO>()
+				.ForMember(dest => dest.MateriaisUtilizados, opt => opt.MapFrom(src => src.MateriaisUtilizados));
+
 
 			CreateMap<MaterialUtilizadoPoco, MaterialUtilizadoDTO>();
 

@@ -39,6 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
 			services.AddScoped<IEstadoRepository, EstadoRepository>();
 			services.AddScoped<IMaterialUtilizadoRepository, MaterialUtilizadoRepository>();
 			services.AddScoped<IOrdemServicoRepository, OrdemServicoRepository>();
+			services.AddScoped<IOrdemServicoSimplesRepository, OrdemServicoSimplesRepository>();
 			services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 			ApplicationContext.SetConnection(configuration.ConnectionString);

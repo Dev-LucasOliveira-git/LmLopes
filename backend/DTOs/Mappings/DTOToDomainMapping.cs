@@ -37,6 +37,9 @@ namespace Dto.Mappings
 			CreateMap<OrdemServicoDTO, OrdemServicoPoco>();
 			CreateMap<CadastroOrdemDTO, OrdemServicoPoco>();
 
+			CreateMap<OrdemServicoSimplesDTO, OrdemServicoSimplesPoco>();
+			CreateMap<CadastroOrdemSimplesDTO, OrdemServicoSimplesPoco>();
+
 			CreateMap<UsuarioDTO, UsuarioPoco>();
 			CreateMap<CadastroUsuarioDTO, UsuarioPoco>()
 								.ForMember(dest => dest.Admin, opt => opt.MapFrom(src => src.TipoUsuario == "ADMIN" ? true : false));

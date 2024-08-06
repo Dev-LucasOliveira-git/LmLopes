@@ -19,9 +19,9 @@ namespace Infra.Application.Configurations
 			builder.Property(entity => entity.IdMaterialUtilizado).ValueGeneratedOnAdd();
 			builder.Property(entity => entity.Quantidade).IsRequired();
 			builder.Property(entity => entity.Descricao).IsRequired();
-			builder.Property(entity => entity.IdOrdemServico).IsRequired();
 
 			builder.HasOne(entity => entity.OrdemServico).WithMany(x => x.MateriaisUtilizados).HasForeignKey(x => x.IdOrdemServico);
+			builder.HasOne(entity => entity.OrdemServicoSimples).WithMany(x => x.MateriaisUtilizados).HasForeignKey(x => x.IdOrdemServicoSimples);
 
 		}
 	}

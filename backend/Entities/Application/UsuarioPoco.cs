@@ -19,6 +19,7 @@
 		public ICollection<ClientePoco>? ClientesCadastrados { get; set; }
 		public ICollection<ClientePoco>? ClientesUltimaAlteracao { get; set; }
 		public ICollection<OrdemServicoPoco>? OrdensServicos { get; set; }
+		public ICollection<OrdemServicoSimplesPoco>? OrdensServicosSimples { get; set; }
 
-    }
+	}
 }

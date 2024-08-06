@@ -28,11 +28,18 @@ namespace Api.Controllers
 		}
 
 		[HttpGet]
-
-
+		[Route("get")]
 		public async Task<ActionResult> GetAll()
 		{
 			var result = await _OrdemServicoService.GetAll();
+
+			return Ok(result);
+		}
+
+		[HttpGet]
+		public async Task<ActionResult> GetAllSimples()
+		{
+			var result = await _OrdemServicoService.GetAllSimples();
 
 			return Ok(result);
 		}
@@ -41,6 +48,15 @@ namespace Api.Controllers
 		[Route("Add")]
 
 		public async Task<ActionResult> Add([FromBody] CadastroOrdemDTO OrdemServicoDTO)
+		{
+
+			var result = await _OrdemServicoService.CadastrarOrdemServico(OrdemServicoDTO);
+
+			return Ok(result);
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> Insert([FromBody] CadastroOrdemSimplesDTO OrdemServicoDTO)
 		{
 
 			var result = await _OrdemServicoService.CadastrarOrdemServico(OrdemServicoDTO);

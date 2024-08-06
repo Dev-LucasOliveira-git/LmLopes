@@ -36,6 +36,8 @@ namespace Infra.Application
 		public DbSet<EstadoPoco> EstadoPoco { get; set; }
 		public DbSet<MaterialUtilizadoPoco> MaterialUtilizadoPoco { get; set; }
 		public DbSet<OrdemServicoPoco> OrdemServicoPoco { get; set; }
+		public DbSet<OrdemServicoSimplesPoco> OrdemServicoSimplesPoco { get; set; }
+
 		public DbSet<UsuarioPoco> UsuarioPoco { get; set; }
 
 
@@ -59,6 +61,7 @@ namespace Infra.Application
 			modelBuilder.ApplyConfiguration(new EstadoPocoConfiguration());
 			modelBuilder.ApplyConfiguration(new MaterialUtilizadoPocoConfiguration());
 			modelBuilder.ApplyConfiguration(new OrdemServicoConfiguration());
+			modelBuilder.ApplyConfiguration(new OrdemServicoSimplesConfiguration());
 			modelBuilder.ApplyConfiguration(new UsuarioPocoConfiguration());
 		}
 
