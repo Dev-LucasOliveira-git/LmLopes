@@ -4,6 +4,7 @@ using Application.CustomMiddlewares;
 using Serilog;
 using Infra.Application;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.HttpOverrides;
 
 try
 {
@@ -71,8 +72,10 @@ try
 
 	});
 
-	app.UseHttpsRedirection();
-
+	app.UseForwardedHeaders(new ForwardedHeadersOptions
+	{
+		ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+	});
 	app.UseAuthentication();
 	app.UseAuthorization();
 	app.MapControllers();

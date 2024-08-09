@@ -24,5 +24,11 @@ namespace Api.Controllers
 
 		}
 
+		[HttpGet]
+		public async Task<ActionResult> Login()
+		{
+			return Ok("ok");
+		}
+
 	}
 }
