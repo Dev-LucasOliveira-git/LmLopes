@@ -1,6 +1,7 @@
 ﻿using Domain.Authentication;
 using Infra;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -19,6 +20,7 @@ namespace Api
 
 		public void ConfigureServices(IServiceCollection services) {
 
+			services.Configure<KestrelServerOptions>(Configuration.GetSection("Kestrel"));
 			services.AddApplicationDependency();
 			services.AddInfraDependency(DatabaseConfiguration);
 			services.AddAutoMapper(typeof(Startup));
