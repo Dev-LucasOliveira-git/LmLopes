@@ -77,6 +77,8 @@ try
 	app.MapControllers();
 	app.UseSwaggerUI();
 
+	app.UseHttpsRedirection();
+
 	app.UseCors(x => { x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
 	app.UseMiddleware<ExceptionHandlingMiddleware>();
 
