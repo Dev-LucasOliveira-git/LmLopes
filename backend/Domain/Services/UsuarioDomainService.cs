@@ -20,8 +20,8 @@ namespace Domain.Services
 		public async Task AtualizaUsuario(UsuarioPoco usuarioPoco)
 		{
 			usuarioPoco.DataHoraUltimaAlteracao = DateTime.Now;
-			usuarioPoco.IdUsuarioUltimaAlteracao = await _tokenDomainService.GetIdUsuario();
-
+			usuarioPoco.IdUsuarioUltimaAlteracao = usuarioPoco.IdUsuarioCadastro = await _tokenDomainService.GetIdUsuario();
+			usuarioPoco.Senha = Criptografia.Encript(usuarioPoco.Senha);
 			await _usuarioRepository.Update(usuarioPoco);
 		}
 
