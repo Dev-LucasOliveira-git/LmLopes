@@ -11,6 +11,9 @@ import Swal from 'sweetalert2';
 })
 export class CadastrarPdfComponent {
   cadastroForm!: FormGroup;
+  isComplementoAtividadeEnabled = false;
+  isComplementoDefeitoEnabled = false;
+
 
   constructor(private fb: FormBuilder, private serviceService: ServiceService, private router: Router) { }
 
@@ -23,13 +26,14 @@ export class CadastrarPdfComponent {
       telefone: ['', Validators.required],
       colp: ['', Validators.required],
       equipamento: ['', Validators.required],
+      endereco: ['', Validators.required],
       numSerie: ['', Validators.required],
       horaInicio: ['', Validators.required],
       horaFim: ['', Validators.required],
       atividade: ['', Validators.required],
       defeito: ['', Validators.required],
-      complementoAtividade: ['', Validators.required],
-      complementoDefeito: ['', Validators.required],
+      complementoAtividade: [''],
+      complementoDefeito: [''],
       limpeza: [false],
       ajuste: [false],
       lubrificacao: [false],
@@ -37,7 +41,36 @@ export class CadastrarPdfComponent {
       nomeEngenheiro: ['', Validators.required],
       rg_Crea: ['', Validators.required],
     });
+  
+    this.cadastroForm.get('atividade')?.valueChanges.subscribe(value => {
+      this.isComplementoAtividadeEnabled = value === 'Outros'; 
+      this.toggleComplementoAtividade();
+    });
+  
+    this.cadastroForm.get('defeito')?.valueChanges.subscribe(value => {
+      this.isComplementoDefeitoEnabled = value === 'Outros'; 
+      this.toggleComplementoDefeito();
+    });
   }
+  
+  toggleComplementoAtividade(): void {
+    const complementoAtividadeControl = this.cadastroForm.get('complementoAtividade');
+    if (this.isComplementoAtividadeEnabled) {
+      complementoAtividadeControl?.enable();
+    } else {
+      complementoAtividadeControl?.disable();
+    }
+  }
+  
+  toggleComplementoDefeito(): void {
+    const complementoDefeitoControl = this.cadastroForm.get('complementoDefeito');
+    if (this.isComplementoDefeitoEnabled) {
+      complementoDefeitoControl?.enable();
+    } else {
+      complementoDefeitoControl?.disable();
+    }
+  }
+  
 
   onSubmit(): void {
     if (this.cadastroForm.valid) {

@@ -1,114 +1,135 @@
 <app-navbar></app-navbar>
 <div class="container mt-5">
-  <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
-    <div class="row mb-3">
-      <label for="dataHora" class="col-sm-2 col-form-label">Data e Hora</label>
-      <div class="col-sm-4">
-        <input type="date" id="dataHora" formControlName="dataHora" class="form-control">
-      </div>
-      <label for="numero" class="col-sm-2 col-form-label">Número</label>
-      <div class="col-sm-4">
-        <input type="text" id="numero" formControlName="numero" class="form-control">
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label for="numeroPrisma" class="col-sm-2 col-form-label">Número Prisma</label>
-      <div class="col-sm-4">
-        <input type="text" id="numeroPrisma" formControlName="numeroPrisma" class="form-control">
-      </div>
-      <label for="contato" class="col-sm-2 col-form-label">Contato</label>
-      <div class="col-sm-4">
-        <input type="text" id="contato" formControlName="contato" class="form-control">
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label for="telefone" class="col-sm-2 col-form-label">Telefone</label>
-      <div class="col-sm-4">
-        <input type="text" id="telefone" formControlName="telefone" class="form-control">
-      </div>
-      <label for="colp" class="col-sm-2 col-form-label">COLP</label>
-      <div class="col-sm-4">
-        <input type="text" id="colp" formControlName="colp" class="form-control">
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label for="equipamento" class="col-sm-2 col-form-label">Equipamento</label>
-      <div class="col-sm-4">
-        <input type="text" id="equipamento" formControlName="equipamento" class="form-control">
-      </div>
-      <label for="numSerie" class="col-sm-2 col-form-label">Número de Série</label>
-      <div class="col-sm-4">
-        <input type="text" id="numSerie" formControlName="numSerie" class="form-control">
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label for="horaInicio" class="col-sm-2 col-form-label">Hora de Início</label>
-      <div class="col-sm-4">
-        <input type="datetime-local" id="horaInicio" formControlName="horaInicio" class="form-control">
-      </div>
-      <label for="horaFim" class="col-sm-2 col-form-label">Hora de Fim</label>
-      <div class="col-sm-4">
-        <input type="datetime-local" id="horaFim" formControlName="horaFim" class="form-control">
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label for="atividade" class="col-sm-2 col-form-label">Atividade</label>
-      <div class="col-sm-4">
-        <input type="text" id="atividade" formControlName="atividade" class="form-control">
-      </div>
-      <label for="defeito" class="col-sm-2 col-form-label">Defeito</label>
-      <div class="col-sm-4">
-        <input type="text" id="defeito" formControlName="defeito" class="form-control">
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label for="complementoAtividade" class="col-sm-2 col-form-label">Complemento Atividade</label>
-      <div class="col-sm-4">
-        <input type="text" id="complementoAtividade" formControlName="complementoAtividade" class="form-control">
-      </div>
-      <label for="complementoDefeito" class="col-sm-2 col-form-label">Complemento Defeito</label>
-      <div class="col-sm-4">
-        <input type="text" id="complementoDefeito" formControlName="complementoDefeito" class="form-control">
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Serviços</label>
-      <div class="col-sm-10">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="limpeza" formControlName="limpeza">
-          <label class="form-check-label" for="limpeza">Limpeza</label>
+    <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+        <div class="row mb-3">
+            <label for="numero" class="col-sm-2 col-form-label">Número Manutenção</label>
+            <div class="col-sm-4">
+                <input type="text" id="numero" formControlName="numero" class="form-control">
+            </div>
+            <label for="dataHora" class="col-sm-2 col-form-label">Data</label>
+            <div class="col-sm-4">
+                <input type="date" id="dataHora" formControlName="dataHora" class="form-control">
+            </div>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="ajuste" formControlName="ajuste">
-          <label class="form-check-label" for="ajuste">Ajuste</label>
+        <div class="row mb-3">
+            <label for="numeroPrisma" class="col-sm-2 col-form-label">Número Prisma</label>
+            <div class="col-sm-4">
+                <input type="text" id="numeroPrisma" formControlName="numeroPrisma" class="form-control">
+            </div>
+            <label for="contato" class="col-sm-2 col-form-label">Contato</label>
+            <div class="col-sm-4">
+                <input type="text" id="contato" formControlName="contato" class="form-control">
+            </div>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="lubrificacao" formControlName="lubrificacao">
-          <label class="form-check-label" for="lubrificacao">Lubrificação</label>
+        <div class="row mb-3">
+            <label for="telefone" class="col-sm-2 col-form-label">Telefone</label>
+            <div class="col-sm-4">
+                <input type="text" id="telefone" formControlName="telefone" class="form-control">
+            </div>
+            <label for="colp" class="col-sm-2 col-form-label">COLP</label>
+            <div class="col-sm-4">
+                <input type="text" id="colp" formControlName="colp" class="form-control">
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label for="obs" class="col-sm-2 col-form-label">Observações</label>
-      <div class="col-sm-4">
-        <textarea id="obs" formControlName="obs" class="form-control"></textarea>
-      </div>
-      <label for="nomeEngenheiro" class="col-sm-2 col-form-label">Nome do Engenheiro</label>
-      <div class="col-sm-4">
-        <input type="text" id="nomeEngenheiro" formControlName="nomeEngenheiro" class="form-control">
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label for="rg_Crea" class="col-sm-2 col-form-label">RG/CREA</label>
-      <div class="col-sm-4">
-        <input type="text" id="rg_Crea" formControlName="rg_Crea" class="form-control">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-10 offset-sm-2">
-        <button type="submit" class="btn btn-primary">Enviar</button>
-      </div>
-    </div>
-  </form>
+        <div class="row mb-3">
+            <label for="equipamento" class="col-sm-2 col-form-label">Equipamento</label>
+            <div class="col-sm-4">
+                <input type="text" id="equipamento" formControlName="equipamento" class="form-control">
+            </div>
+            <label for="endereco" class="col-sm-2 col-form-label">Endereço</label>
+            <div class="col-sm-4">
+                <input type="text" id="endereco" formControlName="endereco" class="form-control">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="numSerie" class="col-sm-2 col-form-label">Número de Série</label>
+            <div class="col-sm-4">
+                <input type="text" id="numSerie" formControlName="numSerie" class="form-control">
+            </div>
+            <label class="col-sm-2 col-form-label">Serviços</label>
+            <div class="col-sm-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="limpeza" formControlName="limpeza">
+                    <label class="form-check-label" for="limpeza">Limpeza</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="ajuste" formControlName="ajuste">
+                    <label class="form-check-label" for="ajuste">Ajuste</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="lubrificacao" formControlName="lubrificacao">
+                    <label class="form-check-label" for="lubrificacao">Lubrificação</label>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="horaInicio" class="col-sm-2 col-form-label">Hora de Início</label>
+            <div class="col-sm-4">
+                <input type="datetime-local" id="horaInicio" formControlName="horaInicio" class="form-control">
+            </div>
+            <label for="horaFim" class="col-sm-2 col-form-label">Hora de Fim</label>
+            <div class="col-sm-4">
+                <input type="datetime-local" id="horaFim" formControlName="horaFim" class="form-control">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="defeito" class="col-sm-2 col-form-label">Defeito</label>
+            <div class="col-sm-4">
+                <select id="defeito" formControlName="defeito" class="form-control">
+                    <option value="" disabled selected>Selecione um defeito</option>
+                    <option value="Elétrico">Elétrico</option>
+                    <option value="Mecânico">Mecânico</option>
+                    <option value="Óptico">Óptico</option>
+                    <option value="Outros">Outros</option>
+                </select>
+            </div>
+            <label for="complementoDefeito" class="col-sm-2 col-form-label">Complemento Defeito</label>
+            <div class="col-sm-4">
+                <input type="text" id="complementoDefeito" formControlName="complementoDefeito" class="form-control"
+                       [disabled]="!isComplementoDefeitoEnabled">
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <label for="atividade" class="col-sm-2 col-form-label">Atividade</label>
+            <div class="col-sm-4">
+              <select id="atividade" formControlName="atividade" class="form-control">
+                <option value="" disabled selected>Selecione uma atividade</option>
+                <option value="Preventiva">Preventiva</option>
+                <option value="Corretiva">Corretiva</option>
+                <option value="Instalação">Instalação</option>
+                <option value="Movimentação">Movimentação</option>
+                <option value="Outros">Outros</option>
+              </select>
+            </div>
+            <label for="complementoAtividade" class="col-sm-2 col-form-label">Complemento Atividade</label>
+            <div class="col-sm-4">
+              <input type="text" id="complementoAtividade" formControlName="complementoAtividade" class="form-control"
+                     [disabled]="!isComplementoAtividadeEnabled">
+            </div>
+          </div>
+        <div class="row mb-3">
+            <label for="nomeEngenheiro" class="col-sm-2 col-form-label">Nome do Engenheiro</label>
+            <div class="col-sm-4">
+                <input type="text" id="nomeEngenheiro" formControlName="nomeEngenheiro" class="form-control">
+            </div>
+            <label for="rg_Crea" class="col-sm-2 col-form-label">RG/CREA</label>
+            <div class="col-sm-4">
+                <input type="text" id="rg_Crea" formControlName="rg_Crea" class="form-control">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="obs" class="col-sm-2 col-form-label">Observações</label>
+            <div class="col-sm-4">
+                <textarea id="obs" formControlName="obs" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-10 offset-sm-2">
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </form>
 </div>
 <app-footer></app-footer>
