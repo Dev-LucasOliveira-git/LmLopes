@@ -6,9 +6,7 @@
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
-        public string Telefone { get; set; }
-        public bool Admin { get; set; }
-		public string CaminhoImagem { get; set; }
+        public string? TipoUsuario { get; set; }
 		public DateTime DataHoraCadastro { get; set; }
         public DateTime DataHoraUltimaAlteracao { get; set; }
 		public int IdUsuarioCadastro { get; set; }

@@ -22,6 +22,8 @@ namespace Domain.Services
 			usuarioPoco.DataHoraUltimaAlteracao = DateTime.Now;
 			usuarioPoco.IdUsuarioUltimaAlteracao = usuarioPoco.IdUsuarioCadastro = await _tokenDomainService.GetIdUsuario();
 			usuarioPoco.Senha = Criptografia.Encript(usuarioPoco.Senha);
+			usuarioPoco.TipoUsuario = usuarioPoco.TipoUsuario.ToUpper();
+
 			await _usuarioRepository.Update(usuarioPoco);
 		}
 
@@ -30,6 +32,7 @@ namespace Domain.Services
 			usuarioPoco.DataHoraCadastro = usuarioPoco.DataHoraUltimaAlteracao = DateTime.Now;
 			usuarioPoco.IdUsuarioCadastro = usuarioPoco.IdUsuarioUltimaAlteracao = await _tokenDomainService.GetIdUsuario();
 			usuarioPoco.Senha = Criptografia.Encript(usuarioPoco.Senha);
+			usuarioPoco.TipoUsuario = usuarioPoco.TipoUsuario.ToUpper();
 			await _usuarioRepository.Add(usuarioPoco);
 
 		}
@@ -37,7 +40,7 @@ namespace Domain.Services
 		public async Task<List<UsuarioPoco>> GetAllFuncionarios()
 		{
 
-			var funcionarios = await _usuarioRepository.GetByExpression(x => !x.Admin);
+			var funcionarios = await _usuarioRepository.GetByExpression(x => x.TipoUsuario != "Admin");
 			return funcionarios;
 
 		}

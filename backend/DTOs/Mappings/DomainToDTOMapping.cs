@@ -46,11 +46,9 @@ namespace Dto.Mappings
 
 			CreateMap<MaterialUtilizadoPoco, MaterialUtilizadoDTO>();
 
-			CreateMap<UsuarioPoco, UsuarioDTO>()
-				.ForMember(dest => dest.TipoUsuario, opt => opt.MapFrom(src => src.Admin ? "ADMIN" : "FUNC"));
+			CreateMap<UsuarioPoco, UsuarioDTO>();
 
-			CreateMap<UsuarioPoco, UsuarioSessaoDTO>()
-				.ForMember(dest => dest.TipoUsuario, opt => opt.MapFrom(src => src.Admin ? "ADMIN" : "FUNC"));
+			CreateMap<UsuarioPoco, UsuarioSessaoDTO>();
 
 		}
 	}

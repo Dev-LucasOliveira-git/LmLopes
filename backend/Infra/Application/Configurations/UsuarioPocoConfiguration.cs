@@ -22,7 +22,6 @@ namespace Infra.Application.Configurations
 			builder.Property(entity => entity.Senha).IsRequired();
 			builder.Property(entity => entity.DataHoraCadastro).IsRequired().HasDefaultValueSql("now()");
 			builder.Property(entity => entity.DataHoraUltimaAlteracao).HasDefaultValueSql("now()");
-			builder.Property(entity => entity.Admin).IsRequired();
 
 
 			builder.HasOne(entity => entity.UsuarioCadastro).WithMany().HasForeignKey(x => x.IdUsuarioCadastro);

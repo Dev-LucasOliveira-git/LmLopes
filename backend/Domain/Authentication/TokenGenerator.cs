@@ -21,7 +21,7 @@ namespace Domain.Authentication
 			{
 				Subject = new ClaimsIdentity(new[]
 				{
-					new Claim(ClaimTypes.Role,usuario.Admin ? "Admin" : "Func" ),
+					new Claim(ClaimTypes.Role,usuario.TipoUsuario),
 					new Claim("idUsuario", usuario.IdUsuario.ToString()),
 				}),
 				Expires = DateTime.UtcNow.AddHours(8),
