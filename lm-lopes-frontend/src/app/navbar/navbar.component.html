@@ -1,120 +1,44 @@
 <nav class="navbar align-items-center border-bottom">
     <div class="container-fluid">
-        <div class="d-flex align-items-center ">
-            <a href="#" class="navbar-brand m-0 textColor fw-bold brand">DBook</a>
-            <div id="verticalbar" class="mx-xxl-2 mx-1 d-none d-lg-inline-block"></div>
-            <a href="#" class="nav-link textColor fw-lighter lh-sm brandSubHeading d-none d-lg-inline-block">Visitor
-                <br>
-                <span class="fw-medium brandSubHeading d-none d-lg-inline-block">Management</span>
-            </a>
-            <div class="position-relative ms-4 d-none d-xl-inline-block">
-                <input class="searchInput bg-body-tertiary iconCursor ps-md-5 p-1 p-md-2 " type="search"
-                    placeholder="Search Rides" aria-label="Search">
-                <img class="position-absolute searchImg iconCursor" src="/static_files/svgs/search.svg"
-                    alt="search">
-            </div>
-
+        <div class="d-flex align-items-center" routerLink="/listagem-pdf">
+            <a class="navbar-brand m-0 textColor fw-bold brand"><img src="assets/logo/logo-lm.png" width="40%" alt=""></a>
         </div>
         <div class="d-flex align-items-center">
             <div class="d-none d-lg-block">
                 <ul class="d-flex m-0 list-unstyled ">
-                    <li class="nav-item iconChange  me-4 pt-2">
-                        <a href="#" class="nav-link text-center  p-0">
-                            <div class=" d-flex align-items-center overflow-hidden changeWidth mx-auto">
-                                <img class="one iconHeight mx-2" src="/static_files/svgs2/book.svg" alt="book">
-                                <img class="two iconHeight mx-2" src="/static_files/svgs2/book-half.svg"
-                                    alt="book-half">
-                            </div>
-                            <div class="smallFont textColor">Book</div>
-                        </a>
-                    </li>
-                    <li class="nav-item iconChange   me-4 pt-2">
-                        <a href="#" class="nav-link text-center p-0">
-                            <div class=" d-flex align-items-center overflow-hidden changeWidth mx-auto">
-                                <img class="iconHeight mx-2" src="/static_files/svgs2/dpad.svg" alt="dpad">
-                                <img class=" iconHeight mx-2" src="/static_files/svgs2/dpad-fill.svg" alt="dpad">
-                            </div>
-                            <div class="smallFont textColor">Navigate</div>
-                        </a>
-                    </li>
-                    <li class="nav-item iconChange  me-4 pt-2">
-                        <a href="#" class="nav-link text-center p-0">
-                            <div class=" d-flex align-items-center overflow-hidden changeWidth mx-auto">
-                                <img class="iconHeight mx-2" src="/static_files/svgs2/bar-chart.svg"
-                                    alt="bar-chart">
-                                <img class=" iconHeight mx-2" src="/static_files/svgs2/bar-chart-fill.svg"
-                                    alt="bar-chart">
-                            </div>
-                            <div class="smallFont textColor">Stats</div>
-                        </a>
-                    </li>
-                    <li class="nav-item iconChange  me-4 pt-2">
-                        <a href="#" class="nav-link text-center p-0">
-                            <div class=" d-flex align-items-center overflow-hidden changeWidth mx-auto">
-                                <img class="iconHeight mx-2" src="/static_files/svgs2/lightbulb.svg"
-                                    alt="lightbulb">
-                                <img class=" iconHeight mx-2" src="/static_files/svgs2/lightbulb-fill.svg"
-                                    alt="lightbulb">
-                            </div>
-                            <div class="smallFont textColor">Idea</div>
-                        </a>
-                    </li>
                     <li class="nav-item iconChange  me-3 pt-2">
-                        <a href="#" class="nav-link text-center p-0">
+                        <a routerLink="/cadastrar-usuario"  class="nav-link text-center p-0">
                             <div class=" d-flex align-items-center overflow-hidden changeWidth mx-auto">
-                                <img class="iconHeight mx-2" src="/static_files/svgs2/briefcase.svg"
-                                    alt="briefcase">
-                                <img class=" iconHeight mx-2" src="/static_files/svgs2/briefcase-fill.svg"
-                                    alt="briefcase">
+                                <fa-icon [icon]="faUserPlus" size="lg" class="iconHeight mx-2"></fa-icon>
                             </div>
-                            <div class="smallFont textColor">Career</div>
+                            <div class="smallFont textColor">Cadastrar Usuário</div>
                         </a>
                     </li>
                 </ul>
             </div>
-            <div id="iconContainer"
-                class="d-flex justify-content-center align-items-center rounded-5 bg-light d-xl-none">
-                <img src="/static_files/svgs2/search.svg" alt="search">
-            </div>
-            <button id="hostBtn" class="btn btn-sm m-sm-2 m-1 text-white a rounded-5 px-3 d-none d-lg-inline-block">
-                <img class="me-2 mb-1" src="/static_files/svgs2/megaphone.svg" alt="megaphone">
-                Post</button>
-            <button id="loginBtn" class="btn btn-sm m-sm-2 m-1 bg-primary text-white rounded-5 px-sm-3 px-2">Login
-                <img class="d-none d-lg-inline-block" src="/static_files/svgs2/box-arrow-in-right.svg"
-                    alt="box-arrow">
+            <button routerLink="/cadastrar-pdf"  id="hostBtn" class="btn btn-sm m-sm-2 m-1 text-white a rounded-5 px-3 d-none d-lg-inline-block">
+                <fa-icon [icon]="faFileCirclePlus" size="lg" class="iconHeight mx-2"></fa-icon>
+                Cadastrar Nova Ordem</button>
+            <button routerLink="/login" id="loginBtn" class="btn btn-sm m-sm-2 m-1 bg-danger text-white rounded-5 px-sm-3 px-2">Logout
+                <fa-icon [icon]="faDoorOpen" size="lg" class="iconHeight mx-2"></fa-icon>
             </button>
-            <img class="ms-2" src="/static_files/svgs2/grid-3x3-gap-fill.svg" alt="grid-3x3">
         </div>
     </div>
 </nav>
 <nav id="secondNav" class="bottom-0 position-fixed end-0 start-0">
     <div class="d-lg-none">
         <div class="container-fluid d-flex justify-content-between shadow pt-2">
-            <a href="#" class="text-center text-decoration-none textColor">
-                <div class="mb-1">
-                    <span class="bg-primary rounded-5 p-1 text-white">DB</span>
-                </div>
-                <div class="extraSmallFont active pb-1">Dbook</div>
+            <a class="text-decoration-none textColor  text-center">
+                <fa-icon [icon]="faUserPlus" size="lg" class="iconHeight mx-2"></fa-icon>
+                <div class="extraSmallFont pb-1">Cadastrar Usuário</div>
             </a>
-            <a href="#" class="text-decoration-none textColor  text-center">
-                <img class="iconHeight mb-1" src="/static_files/svgs2/book.svg" alt="book">
-                <div class="extraSmallFont pb-1">Book</div>
+            <a routerLink="/cadastrar-pdf" class="text-decoration-none textColor  text-center">
+                <fa-icon [icon]="faFileCirclePlus" size="lg" class="iconHeight mx-2"></fa-icon>
+                <div routerLink="/cadastrar-pdf" class="extraSmallFont pb-1">Cadastrar Nova Ordem</div>
             </a>
-            <a href="#" class="text-decoration-none textColor  text-center">
-                <img class="iconHeight mb-1" src="/static_files/svgs2/dpad.svg" alt="dpad">
-                <div class="extraSmallFont pb-1">Navigate</div>
-            </a>
-            <a href="#" class="text-decoration-none textColor  text-center">
-                <img class="iconHeight mb-1" src="/static_files/svgs2/bar-chart.svg" alt="bar-chart">
-                <div class="extraSmallFont pb-1">Stats</div>
-            </a>
-            <a href="#" class="text-decoration-none textColor  text-center">
-                <img class="iconHeight mb-1" src="/static_files/svgs2/lightbulb.svg" alt="lightbulb">
-                <div class="extraSmallFont pb-1">Idea</div>
-            </a>
-            <a href="#" class="text-decoration-none textColor  text-center">
-                <img class="iconHeight mb-1" src="/static_files/svgs2/briefcase.svg" alt="briefcase">
-                <div class="extraSmallFont pb-1">Career</div>
+            <a routerLink="/login" class="text-decoration-none textColor  text-center">
+                <fa-icon [icon]="faDoorOpen" size="lg" class="iconHeight mx-2"></fa-icon>
+                <div class="extraSmallFont pb-1">Logout</div>
             </a>
         </div>
     </div>
