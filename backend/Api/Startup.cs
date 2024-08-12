@@ -24,6 +24,7 @@ namespace Api
 			services.AddApplicationDependency();
 			services.AddInfraDependency(DatabaseConfiguration);
 			services.AddAutoMapper(typeof(Startup));
+			services.RegisterCorsPolicies();
 
 		}
 

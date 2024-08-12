@@ -18,6 +18,7 @@ namespace DTOs.DTOs.OrdemServico
 		public string? Contato { get; set; }
 		public string? Telefone { get; set; }
 		public string? Colp { get; set; }
+		public string? Endereco { get; set; }
 		public string? Equipamento { get; set; }
 		public string? numSerie { get; set; }
 		public DateTime? HoraInicio { get; set; }

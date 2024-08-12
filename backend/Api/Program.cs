@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 
 try
 {
-	
+
 	var builder = WebApplication.CreateBuilder(args);
 	SerilogExtension.AddSerilogApi(builder.Configuration);
 	builder.Host.UseSerilog(Log.Logger);
@@ -77,7 +77,19 @@ try
 	app.MapControllers();
 	app.UseSwaggerUI();
 
-	app.UseCors(x => { x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
+	if (app.Environment.IsDevelopment())
+	{
+		app.UseCors("DevelopmentCorsPolicy");
+		app.UseDeveloperExceptionPage();
+		app.UseHttpsRedirection();
+
+	}	
+	else
+	{
+		app.UseCors("ProductionCorsPolicy");
+		//app.UseHsts();
+	}
+
 	app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 	using var scope = app.Services.CreateScope();

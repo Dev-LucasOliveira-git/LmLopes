@@ -36,5 +36,32 @@ namespace Microsoft.Extensions.DependencyInjection
 
 		}
 
+		public static IServiceCollection RegisterCorsPolicies(this IServiceCollection services)
+		{
+			string[] localHostOrigins = new string[] {
+		"http://localhost:4200"};
+
+			string[] productionHostOrigins = new string[] {
+		"http://localhost:4200","http://lmlopesordermanager.online"};
+
+			services.AddCors(options =>    // CORS middleware must precede any defined endpoints
+			{
+				options.AddPolicy("DevelopmentCorsPolicy", builder =>
+				{
+					builder.WithOrigins(localHostOrigins)
+							.AllowAnyHeader().AllowAnyMethod();
+				});
+
+				options.AddPolicy("ProductionCorsPolicy", builder =>
+				{
+					builder.WithOrigins(productionHostOrigins)
+							.AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+				});
+			});
+
+			return services;
+
+		}
+
 	}
 }

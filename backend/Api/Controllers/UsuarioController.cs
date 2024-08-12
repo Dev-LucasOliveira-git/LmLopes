@@ -34,7 +34,7 @@ namespace Api.Controllers
 
 		[HttpPost]
 		[Route("Add")]
-
+		[Authorize(Roles = "Admin")]
 		public async Task<ActionResult> Add([FromBody] CadastroUsuarioDTO usuario)
 		{
 
@@ -49,6 +49,8 @@ namespace Api.Controllers
 
 		[HttpPut]
 		[Route("Update")]
+		[Authorize(Roles = "Admin")]
+
 		public async Task<ActionResult> Update([FromBody] UsuarioDTO usuario)
 		{
 

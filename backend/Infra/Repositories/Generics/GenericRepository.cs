@@ -79,7 +79,7 @@ namespace Infra.Repositories.Generics
 		// Flag: Has Dispose already been called?
 		bool disposed = false;
 		// Instantiate a SafeHandle instance.
-		SafeHandle handle = new SafeFileHandle(IntPtr.Zero, true);
+		//SafeHandle handle = new SafeFileHandle(IntPtr.Zero, true);
 
 
 
@@ -99,7 +99,7 @@ namespace Infra.Repositories.Generics
 
 			if (disposing)
 			{
-				handle.Dispose();
+				//handle.Dispose();
 				// Free any other managed objects here.
 				//
 			}
