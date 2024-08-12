@@ -11,6 +11,18 @@ import { ListagemPdfComponent } from './listagem-pdf/listagem-pdf.component';
 import { CadastrarPdfComponent } from './cadastrar-pdf/cadastrar-pdf.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CadastrarUsuarioComponent } from './cadastrar-usuario/cadastrar-usuario.component';
+
 
 @NgModule({
   declarations: [
@@ -20,16 +32,29 @@ import { FooterComponent } from './footer/footer.component';
     CadastrarPdfComponent,
     NavbarComponent,
     FooterComponent,
+    CadastrarUsuarioComponent,
   ],
   imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatInputModule,
+    MatFormFieldModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    FontAwesomeModule,
+    ReactiveFormsModule
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    library.add(fas);
+  }
+ }

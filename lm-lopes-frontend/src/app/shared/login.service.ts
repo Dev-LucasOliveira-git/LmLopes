@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/enviroment';
 
 
 @Injectable({
@@ -8,10 +9,15 @@ import { Observable } from 'rxjs';
 })
 export class LoginService {
   constructor(private http: HttpClient) { }
+  
+  host = `${environment.API_GATEWAY}`
+
+  public endpoint = {
+    login: `${this.host}/Login`,
+    }
 
   login(email: string, senha: string): Observable<any> {
-    const url = 'http://localhost:5150/api/Login';
     const body = { email, senha };
-    return this.http.post<any>(url, body);
+    return this.http.post<any>(`${this.endpoint.login}`, body);
   }
 }

@@ -1,15 +1,44 @@
-<h3 class="ms-3 my-3">Listagem de Arquivos</h3>
-<ul class="list-group container-listagem">
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      A list item
-      <span class="badge bg-primary rounded-pill">14</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      A second list item
-      <span class="badge bg-primary rounded-pill">2</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      A third list item
-      <span class="badge bg-primary rounded-pill">1</span>
-    </li>
-  </ul>
+<app-navbar></app-navbar>
+<div class="container-fluid container-listagem mt-2">
+<div class="row">
+  <div class="col-md-12">
+    <mat-form-field class="w-25">
+      <input matInput (keyup)="applyFilter($event)" placeholder="Pesquisar">
+    </mat-form-field>
+  </div>
+</div>
+
+<mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="nomeEngenheiro">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Nome do Engenheiro</mat-header-cell>
+    <mat-cell *matCellDef="let pdf">{{ pdf.nomeEngenheiro }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="dataHora">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Data e Hora</mat-header-cell>
+    <mat-cell *matCellDef="let pdf">{{ pdf.dataHora }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="equipamento">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Equipamento</mat-header-cell>
+    <mat-cell *matCellDef="let pdf">{{ pdf.equipamento }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="acao">
+    <mat-header-cell *matHeaderCellDef> Ação </mat-header-cell>
+    <mat-cell *matCellDef="let pdf">
+      <button mat-butto class="btn btn-primary" (click)="onRowClicked(pdf)">
+        <fa-icon [icon]="faDownload" size="lg" class="iconHeight mx-2"></fa-icon>
+        Baixar ordem de serviço</button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row style="cursor: pointer;" *matRowDef="let row; columns: displayedColumns;"
+    (click)="onRowClicked(row)"></mat-row>
+</mat-table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>
+
+<app-footer></app-footer>
