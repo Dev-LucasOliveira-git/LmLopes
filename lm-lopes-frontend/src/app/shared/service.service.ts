@@ -20,7 +20,7 @@ export class ServiceService {
   public endpoint = {
     listar: `${this.host}/OrdemServico`,
     cadastrar: `${this.host}/OrdemServico`,
-    listarUsuarios: `${this.host}/Usuario/Login`,
+    listarUsuarios: `${this.host}/Usuario`,
     cadastrarUsuarios: `${this.host}/Usuario/Add`,
   };
 
@@ -35,7 +35,7 @@ export class ServiceService {
   }
 
   listarUsuarios(): Observable<any> {
-    return this.http.get<any>(this.endpoint.listar, { headers: this.getAuthHeaders() });
+    return this.http.get<any>(this.endpoint.listarUsuarios, { headers: this.getAuthHeaders() });
   }
 
   cadastrarUsuario(dados: any): Observable<any> {

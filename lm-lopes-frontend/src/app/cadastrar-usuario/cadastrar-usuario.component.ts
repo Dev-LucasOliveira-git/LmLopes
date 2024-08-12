@@ -18,7 +18,7 @@ export class CadastrarUsuarioComponent implements OnInit {
 
   cadastroForm!: FormGroup;
   dataSource = new MatTableDataSource<any>();
-  displayedColumns: string[] = ['nomeEngenheiro', 'dataHora', 'equipamento'];
+  displayedColumns: string[] = ['nome', 'email', 'senha'];
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -36,19 +36,19 @@ export class CadastrarUsuarioComponent implements OnInit {
     this.carregar();
   }
   public carregar() {
-    this.serviceService.listarOrdemServico().pipe(
+    this.serviceService.listarUsuarios().pipe(
       map((data: any) => {
         console.log("Received data:", data);
-        this.dataSource.data = data.data; // Assign the received data to dataSource
-        this.dataSource.paginator = this.paginator; // Assign paginator
-        this.dataSource.sort = this.sort; // Assign sort
+        this.dataSource.data = data.data; 
+        this.dataSource.paginator = this.paginator; 
+        this.dataSource.sort = this.sort; 
       }),
       catchError(err => {
         console.error("Error occurred:", err);
-        this.dataSource.data = []; // Assign an empty array in case of error
+        this.dataSource.data = []; 
         return of([]);
       })
-    ).subscribe(); // Subscribe to the observable to trigger the request
+    ).subscribe();
   }
 
   applyFilter(event: Event) {

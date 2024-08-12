@@ -6,9 +6,14 @@
       <div class="col-sm-4">
         <input type="text" id="dataHora" formControlName="nome" class="form-control">
       </div>
-      <label for="numero" class="col-sm-2 col-form-label">Tipo Usuario</label>
+      <label for="tipoUsuario" class="col-sm-2 col-form-label">Tipo Usuario</label>
       <div class="col-sm-4">
-        <input type="text" id="numero" formControlName="tipoUsuario" class="form-control">
+        <select id="tipoUsuario" formControlName="tipoUsuario" class="form-control">
+          <option value="" disabled selected>Selecione um tipo</option>
+          <option value="ENG">Lvl 1</option>
+          <option value="FUNC">Lvl 2</option>
+          <option value="ADMIN">Lvl 3</option>
+        </select>
       </div>
     </div>
     <div class="row mb-3">
@@ -28,19 +33,19 @@
     </div>
   </form>
   <mat-table [dataSource]="dataSource" matSort>
-  <ng-container matColumnDef="nomeEngenheiro">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>Nome do Engenheiro</mat-header-cell>
-    <mat-cell *matCellDef="let pdf">{{ pdf.nomeEngenheiro }}</mat-cell>
+  <ng-container matColumnDef="nome">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Nome do Usuário</mat-header-cell>
+    <mat-cell *matCellDef="let pdf">{{ pdf.nome }}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="dataHora">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>Data e Hora</mat-header-cell>
-    <mat-cell *matCellDef="let pdf">{{ pdf.dataHora }}</mat-cell>
+  <ng-container matColumnDef="email">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Email do Usuário</mat-header-cell>
+    <mat-cell *matCellDef="let pdf">{{ pdf.email }}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="equipamento">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>Equipamento</mat-header-cell>
-    <mat-cell *matCellDef="let pdf">{{ pdf.equipamento }}</mat-cell>
+  <ng-container matColumnDef="senha">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo do Usuário</mat-header-cell>
+    <mat-cell *matCellDef="let pdf">{{ pdf.tipoUsuario }}</mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
