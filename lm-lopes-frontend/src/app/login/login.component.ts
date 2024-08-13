@@ -40,11 +40,8 @@ export class LoginComponent {
       if (response && response.data.token) {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', response.data.usuario.nome);
-        if (response.data.usuario.tipoUsuario === 'ADMIN') {
+        localStorage.setItem('tipoUser', response.data.usuario.tipoUsuario);
           this.router.navigate(['/listagem-pdf']);
-        } else if (response.data.usuario.tipoUsuario === 'FUNC') {
-          this.router.navigate(['/listagem-pdf']);
-        }
       } 
     }, error => {
       console.error(error);

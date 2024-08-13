@@ -95,6 +95,11 @@ input.searchInput::placeholder {
     background-size: 200%;
     transition: 0.5s ease-out;
 }
+@media (max-width: 800px) {
+    #loginBtn{
+        display: none;
+    }   
+}
 
 #loginBtn:hover {
     background-position: left;

@@ -72,7 +72,6 @@
                 <input type="datetime-local" id="horaFim" formControlName="horaFim" class="form-control">
             </div>
         </div>
-
         <div class="row mb-3">
             <label for="defeito" class="col-sm-2 col-form-label">Defeito</label>
             <div class="col-sm-4">
@@ -86,29 +85,26 @@
             </div>
             <label for="complementoDefeito" class="col-sm-2 col-form-label">Complemento Defeito</label>
             <div class="col-sm-4">
-                <input type="text" id="complementoDefeito" formControlName="complementoDefeito" class="form-control"
-                       [disabled]="!isComplementoDefeitoEnabled">
+                <input type="text" id="complementoDefeito" formControlName="complementoDefeito" class="form-control" [disabled]="!isComplementoDefeitoEnabled">
             </div>
         </div>
-        
         <div class="row mb-3">
             <label for="atividade" class="col-sm-2 col-form-label">Atividade</label>
             <div class="col-sm-4">
-              <select id="atividade" formControlName="atividade" class="form-control">
-                <option value="" disabled selected>Selecione uma atividade</option>
-                <option value="Preventiva">Preventiva</option>
-                <option value="Corretiva">Corretiva</option>
-                <option value="Instalação">Instalação</option>
-                <option value="Movimentação">Movimentação</option>
-                <option value="Outros">Outros</option>
-              </select>
+                <select id="atividade" formControlName="atividade" class="form-control">
+                    <option value="" disabled selected>Selecione uma atividade</option>
+                    <option value="Preventiva">Preventiva</option>
+                    <option value="Corretiva">Corretiva</option>
+                    <option value="Instalação">Instalação</option>
+                    <option value="Movimentação">Movimentação</option>
+                    <option value="Outros">Outros</option>
+                </select>
             </div>
             <label for="complementoAtividade" class="col-sm-2 col-form-label">Complemento Atividade</label>
             <div class="col-sm-4">
-              <input type="text" id="complementoAtividade" formControlName="complementoAtividade" class="form-control"
-                     [disabled]="!isComplementoAtividadeEnabled">
+                <input type="text" id="complementoAtividade" formControlName="complementoAtividade" class="form-control" [disabled]="!isComplementoAtividadeEnabled">
             </div>
-          </div>
+        </div>
         <div class="row mb-3">
             <label for="nomeEngenheiro" class="col-sm-2 col-form-label">Nome do Engenheiro</label>
             <div class="col-sm-4">
@@ -125,6 +121,29 @@
                 <textarea id="obs" formControlName="obs" class="form-control"></textarea>
             </div>
         </div>
+        
+        <div class="row mb-3">
+            <div class="col-sm-2 col-form-label">Materiais Utilizados</div>
+            <div class="col-sm-10">
+                <div formArrayName="materiaisUtilizados">
+                    <div *ngFor="let material of materiaisUtilizados.controls; let i = index" [formGroupName]="i" class="row mb-3">
+                        <div class="col-sm-4">
+                            <label for="descricao" class="col-sm-2 col-form-label">Descricao</label>
+                            <input type="text" placeholder="Descrição" formControlName="descricao" class="form-control">
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="quantidade" class="col-sm-2 col-form-label">Quantidade</label>
+                            <input type="number" placeholder="Quantidade" formControlName="quantidade" class="form-control">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-danger mt-2" (click)="removeMaterial(i)">Remover</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" (click)="addMaterial()">Adicionar Material</button>
+            </div>
+        </div>
+        
         <div class="row">
             <div class="col-sm-10 offset-sm-2">
                 <button type="submit" class="btn btn-primary">Enviar</button>

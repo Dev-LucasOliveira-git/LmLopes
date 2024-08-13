@@ -7,7 +7,7 @@
             <div class="d-none d-lg-block">
                 <ul class="d-flex m-0 list-unstyled ">
                     <li class="nav-item iconChange  me-3 pt-2">
-                        <a routerLink="/cadastrar-usuario"  class="nav-link text-center p-0">
+                        <a routerLink="/cadastrar-usuario" *ngIf="roleUser !== 'ENG' && roleUser !== 'FUNC'"  class="nav-link text-center p-0">
                             <div class=" d-flex align-items-center overflow-hidden changeWidth mx-auto">
                                 <fa-icon [icon]="faUserPlus" size="lg" class="iconHeight mx-2"></fa-icon>
                             </div>
@@ -16,7 +16,7 @@
                     </li>
                 </ul>
             </div>
-            <button routerLink="/cadastrar-pdf"  id="hostBtn" class="btn btn-sm m-sm-2 m-1 text-white a rounded-5 px-3 d-none d-lg-inline-block">
+            <button *ngIf="roleUser !== 'ENG'" routerLink="/cadastrar-pdf"  id="hostBtn" class="btn btn-sm m-sm-2 m-1 text-white a rounded-5 px-3 d-none d-lg-inline-block">
                 <fa-icon [icon]="faFileCirclePlus" size="lg" class="iconHeight mx-2"></fa-icon>
                 Cadastrar Nova Ordem</button>
             <button routerLink="/login" id="loginBtn" class="btn btn-sm m-sm-2 m-1 bg-danger text-white rounded-5 px-sm-3 px-2">Logout
@@ -28,11 +28,11 @@
 <nav id="secondNav" class="bottom-0 position-fixed end-0 start-0">
     <div class="d-lg-none">
         <div class="container-fluid d-flex justify-content-between shadow pt-2">
-            <a class="text-decoration-none textColor  text-center">
+            <a class="text-decoration-none textColor  text-center" *ngIf="roleUser !== 'ENG' && roleUser !== 'FUNC'">
                 <fa-icon [icon]="faUserPlus" size="lg" class="iconHeight mx-2"></fa-icon>
                 <div class="extraSmallFont pb-1">Cadastrar Usuário</div>
             </a>
-            <a routerLink="/cadastrar-pdf" class="text-decoration-none textColor  text-center">
+            <a *ngIf="roleUser !== 'ENG'" routerLink="/cadastrar-pdf" class="text-decoration-none textColor  text-center">
                 <fa-icon [icon]="faFileCirclePlus" size="lg" class="iconHeight mx-2"></fa-icon>
                 <div routerLink="/cadastrar-pdf" class="extraSmallFont pb-1">Cadastrar Nova Ordem</div>
             </a>

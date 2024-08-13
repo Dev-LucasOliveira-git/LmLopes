@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { faDoorOpen, faFileCirclePlus, faPlus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -6,9 +6,14 @@ import { faDoorOpen, faFileCirclePlus, faPlus, faUserPlus } from '@fortawesome/f
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   faUserPlus = faUserPlus;
   faFileCirclePlus = faFileCirclePlus;
   faDoorOpen = faDoorOpen;
 
+  roleUser: any
+
+  ngOnInit(): void {
+    this.roleUser = localStorage.getItem('tipoUser')
+  }
 }
