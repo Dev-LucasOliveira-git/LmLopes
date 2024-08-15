@@ -64,8 +64,7 @@ export class CadastrarPdfComponent implements OnInit {
   addMaterial(): void {
     this.materiaisUtilizados.push(this.fb.group({
       descricao: ['', Validators.required],
-      quantidade: [0, Validators.required],
-      idOrdem: [0, Validators.required]
+      quantidade: [0, Validators.required]      
     }));
   }
 

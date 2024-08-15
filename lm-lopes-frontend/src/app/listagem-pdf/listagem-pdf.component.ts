@@ -65,6 +65,8 @@ export class ListagemPdfComponent implements OnInit {
         const imgRatio = imgHeight / imgWidth;
         const imgDisplayWidth = 40;
         const imgDisplayHeight = imgDisplayWidth * imgRatio;
+        const blueColor = '#366183';
+        const blackColor = '#000';
 
         doc.addImage(img, 'PNG', 10, 10, imgDisplayWidth, imgDisplayHeight);
 
@@ -75,11 +77,15 @@ export class ListagemPdfComponent implements OnInit {
         doc.setFontSize(8);
         doc.text('Rua Marco Palmezzano, 231 - Americanópolis / SP – Cep: 04337-160', textX, startY, { align: 'right' });
         doc.text('Fone: (11) 5594-1075 / (11) 5199-6014 (11) 9.4172-7631', textX, startY + lineSpacing, { align: 'right' });
-        doc.text('E-mail: atendimento@lmlopes.net / www.lmlopes.net', textX, startY + lineSpacing * 2, { align: 'right' });
+
+        doc.text('E-mail: ', textX - doc.getTextWidth("atendimento@lmlopes.net / www.lmlopes.net") - 1 , startY + lineSpacing * 2, { align: 'right' });
+        doc.setTextColor(blueColor)
+        doc.text('atendimento@lmlopes.net / www.lmlopes.net', textX , startY + lineSpacing * 2, { align: 'right' });
+
+        doc.setTextColor(blackColor)
         doc.text('CNPJ: 23.030.998/0001-72 / I.E 144.891.861.113', textX, startY + lineSpacing * 3, { align: 'right' });
 
-        const blueColor = '#366183';
-        const blackColor = '#000';
+
 
         doc.setDrawColor(blueColor);
         doc.setLineWidth(1);
@@ -91,14 +97,23 @@ export class ListagemPdfComponent implements OnInit {
 
         doc.setFontSize(10);
         doc.text(`Número de OS ${pdf.numero} - Número Prisma: ${pdf.numeroPrisma}`, 10, textStartY);
+
+        doc.setFont('Helvetica', 'bold');
         doc.text(`Colp: ${pdf.colp}`, 10, textStartY + textLineSpacing);
+
+        doc.setFont('Helvetica', 'normal');
         doc.text(`Data: ${pdf.dataHora}`, rightTextX, textStartY + textLineSpacing);
         doc.text(`Equipamento: ${pdf.equipamento}`, 10, textStartY + textLineSpacing * 2);
         doc.text(`Nº Série: ${pdf.numSerie}`, rightTextX, textStartY + textLineSpacing * 2);
         doc.text(`Endereço: ${pdf.endereco}`, 10, textStartY + textLineSpacing * 3);
+
+        doc.setFont('Helvetica', 'bold');
         doc.text(`Telefone: ${pdf.telefone}`, rightTextX, textStartY + textLineSpacing * 3);
+
+        doc.setFont('Helvetica', 'bold');
         doc.text(`Contato: ${pdf.contato}`, 10, textStartY + textLineSpacing * 4);
 
+        doc.setFont('Helvetica', 'normal');
         doc.setDrawColor(blueColor);
         doc.setLineWidth(1);
         doc.line(10, textStartY + textLineSpacing * 5, 200, textStartY + textLineSpacing * 5); 
@@ -142,21 +157,18 @@ export class ListagemPdfComponent implements OnInit {
         doc.text('Defeito', activityCol2X + 2, activityTableStartY);
 
         // Activity rows
-        const markX = (condition: boolean) => condition ? 'X' : '';
+        const markX = (condition: boolean) => condition ? 'X' : '  ';
 
-        doc.text(`( ${markX(pdf.atividade === 'Preventiva')} ) Preventiva`, activityCol1X + 2, activityTableStartY + activityLineSpacing);
-        doc.text(`( ${markX(pdf.defeito === 'Elétrico')} ) Elétrico`, activityCol2X + 2, activityTableStartY + activityLineSpacing);
+        doc.text(`(${markX(pdf.atividade === 'Preventiva')}) Preventiva`, activityCol1X + 2, activityTableStartY + activityLineSpacing);
+        doc.text(`(${markX(pdf.defeito === 'Elétrico')}) Elétrico`, activityCol2X + 2, activityTableStartY + activityLineSpacing);
 
-        doc.text(`( ${markX(pdf.atividade === 'Corretiva')} ) Corretiva`, activityCol1X + 2, activityTableStartY + activityLineSpacing * 2);
-        doc.text(`( ${markX(pdf.defeito === 'Mecânico')} ) Mecânico`, activityCol2X + 2, activityTableStartY + activityLineSpacing * 2);
-
-        doc.text(`( ${markX(pdf.atividade === 'Instalação')} ) Instalação`, activityCol1X + 2, activityTableStartY + activityLineSpacing * 3);
-        doc.text(`( ${markX(pdf.defeito === 'Óptico')} ) Óptico`, activityCol2X + 2, activityTableStartY + activityLineSpacing * 3);
-
-        doc.text(`( ${markX(pdf.atividade === 'Movimentação')} ) Movimentação`, activityCol1X + 2, activityTableStartY + activityLineSpacing * 4);
-        doc.text(`( ${markX(pdf.defeito === 'Outros')} ) Outros`, activityCol2X + 2, activityTableStartY + activityLineSpacing * 4);
-
-        doc.text(`( ${markX(pdf.atividade === 'Outros')} ) Outros`, activityCol1X + 2, activityTableStartY + activityLineSpacing * 5);
+        doc.text(`(${markX(pdf.atividade === 'Corretiva')}) Corretiva`, activityCol1X + 2, activityTableStartY + activityLineSpacing * 2);
+        doc.text(`(${markX(pdf.defeito === 'Mecânico')}) Mecânico`, activityCol2X + 2, activityTableStartY + activityLineSpacing * 2);
+        doc.text(`(${markX(pdf.atividade === 'Instalação')}) Instalação`, activityCol1X + 2, activityTableStartY + activityLineSpacing * 3);
+        doc.text(`(${markX(pdf.defeito === 'Óptico')}) Óptico`, activityCol2X + 2, activityTableStartY + activityLineSpacing * 3);
+        doc.text(`(${markX(pdf.atividade === 'Movimentação')}) Movimentação`, activityCol1X + 2, activityTableStartY + activityLineSpacing * 4);
+        doc.text(`(${markX(pdf.defeito === 'Outros')}) Outros`, activityCol2X + 2, activityTableStartY + activityLineSpacing * 4);
+        doc.text(`(${markX(pdf.atividade === 'Outros')}) Outros`, activityCol1X + 2, activityTableStartY + activityLineSpacing * 5);
 
         // Complement fields
         const complementStartY = activityTableStartY + activityLineSpacing * 6; // Start Y position for the complement fields
@@ -172,31 +184,89 @@ export class ListagemPdfComponent implements OnInit {
         doc.line(activityCol2X - 1, activityTableStartY - 4, activityCol2X - 1, complementStartY + 2); // Column 1-2 divider
 
         const servicesStartY = activityTableStartY + activityLineSpacing * 6 + 15; 
-        const servicesLineSpacing = 8; 
+        const servicesLineSpacing = 6; 
         doc.setFontSize(10);
         doc.setTextColor(blackColor);
         doc.text('Descrição dos Serviços Executados:', 10, servicesStartY);
 
         doc.setFontSize(9);
-        const descriptionTextWidth = 190; 
+        const descriptionTextWidth = 175; 
 
-        doc.text(`( ${markX(pdf.limpeza)} ) Limpeza: Oculares, Prismas, Binocular, Objetiva, Diafragma do sistema de desvio óptico, sistema do coletor, fonte de iluminação, câmera de vídeo.`, 10, servicesStartY + servicesLineSpacing, { maxWidth: descriptionTextWidth });
-        doc.text(`( ${markX(pdf.ajuste)} ) Ajuste: Prismas, Divisor de imagem, Adaptador da Câmera, botão de movimento macrométrico, sistema de fricção de movimento macrométrico, fricção do movimento de ângulo (vertical), movimentos articulados do braço articulados, elétricos, mecânicos e iluminação.`, 10, servicesStartY + servicesLineSpacing * 2.3, { maxWidth: descriptionTextWidth });
-        doc.text(`( ${markX(pdf.lubrificacao)} ) Lubrificação: Sistema de refrigeração da fonte de iluminação, movimentos articulados, substituição de lubrificantes especiais.`, 10, servicesStartY + servicesLineSpacing * 4, { maxWidth: descriptionTextWidth });
+        var boldText = `(${markX(pdf.limpeza)}) Limpeza: `;
+        var textAfterBold = 'Oculares, Prismas, Binocular, Objetiva, Diafragma do sistema de desvio óptico, sistema do coletor, fonte de iluminação, câmera de vídeo.';      
+        
+        doc.setFont('Helvetica', 'bold');
+        doc.text(boldText, 10, servicesStartY + servicesLineSpacing, { maxWidth: descriptionTextWidth });
+        
+        var underlineThickness = 0.5; // Espessura da linha
+        var underlineOffset = 1; // Distância do texto ao sublinhado (ajuste conforme necessário)        
+        // Desenha a linha do sublinhado
+        doc.setDrawColor(0, 0, 0); // RGB para preto
+        doc.setLineWidth(underlineThickness);
+        doc.line(10 + doc.getTextWidth(`${markX(pdf.limpeza)}) `)+1, servicesStartY + servicesLineSpacing + underlineOffset, 10 + doc.getTextWidth(boldText), servicesStartY + servicesLineSpacing+ underlineOffset);
+
+                
+        doc.setFont('Helvetica', 'normal');
+        doc.text(textAfterBold, 10 + doc.getTextWidth(boldText) + 1, servicesStartY + servicesLineSpacing, { maxWidth: descriptionTextWidth });
+
+        boldText = `(${markX(pdf.ajuste)}) Ajuste: `;
+        textAfterBold = 'Prismas, Divisor de imagem, Adaptador da Câmera, botão de movimento macrométrico, sistema de fricção de movimento macrométrico, fricção do movimento de ângulo (vertical), movimentos articulados do braço articulados, elétricos, mecânicos e iluminação.';    
+        doc.setFont('Helvetica', 'bold');
+        doc.text(boldText, 10, servicesStartY + servicesLineSpacing * 2.2, { maxWidth: descriptionTextWidth });
+       
+       
+        var underlineThickness = 0.5; // Espessura da linha
+        var underlineOffset = 1; // Distância do texto ao sublinhado (ajuste conforme necessário)        
+        // Desenha a linha do sublinhado
+        doc.setDrawColor(0, 0, 0); // RGB para preto
+        doc.setLineWidth(underlineThickness);
+        doc.line(10 + doc.getTextWidth(`${markX(pdf.ajuste)}) `)+1, (servicesStartY + servicesLineSpacing * 2.2 ) + underlineOffset, 10 + doc.getTextWidth(boldText), (servicesStartY + servicesLineSpacing * 2.2 )+ underlineOffset);
+
+       
+       
+        doc.setFont('Helvetica', 'normal');
+        doc.text(textAfterBold, 10 + doc.getTextWidth(boldText) + 1, servicesStartY + servicesLineSpacing * 2.2, { maxWidth: descriptionTextWidth });
+
+
+        boldText = `(${markX(pdf.lubrificacao)}) Lubrificação: `;
+        textAfterBold = 'Sistema de refrigeração da fonte de iluminação, movimentos articulados, substituição de lubrificantes especiais.';
+        doc.setFont('Helvetica', 'bold');
+        doc.text(boldText, 10, servicesStartY + servicesLineSpacing * 4, { maxWidth: descriptionTextWidth });
+        
+        var underlineThickness = 0.5; // Espessura da linha
+        var underlineOffset = 1; // Distância do texto ao sublinhado (ajuste conforme necessário)        
+        // Desenha a linha do sublinhado
+        doc.setDrawColor(0, 0, 0); // RGB para preto
+        doc.setLineWidth(underlineThickness);
+        doc.line(10 + doc.getTextWidth(`${markX(pdf.lubrificacao)}) `)+1, (servicesStartY + servicesLineSpacing * 4 ) + underlineOffset, 10 + doc.getTextWidth(boldText), (servicesStartY + servicesLineSpacing * 4 )+ underlineOffset);
+
+        
+        doc.setFont('Helvetica', 'normal');
+        doc.text(textAfterBold, 10 + doc.getTextWidth(boldText) + 2, servicesStartY + servicesLineSpacing * 4, { maxWidth: descriptionTextWidth });
 
         const observationsStartY = servicesStartY + servicesLineSpacing * 3 + 15; 
         const observationsLineSpacing = 8; 
 
         doc.setFontSize(10);
         doc.setTextColor(blackColor);
+        doc.setFont('Helvetica', 'bold');
+
         doc.text('Observações:', 10, observationsStartY);
+        underlineThickness = 0.5; // Espessura da linha
+        underlineOffset = 1; // Distância do texto ao sublinhado (ajuste conforme necessário)        
+        // Desenha a linha do sublinhado
+        doc.setDrawColor(0, 0, 0); // RGB para preto
+        doc.setLineWidth(underlineThickness);
+        doc.line(10, observationsStartY + underlineOffset, 10 + doc.getTextWidth("Observações:"), observationsStartY + underlineOffset);
+
 
         doc.setFontSize(9);
+        doc.setFont('Helvetica', 'normal');
         doc.text(pdf.obs || '', 10, observationsStartY + observationsLineSpacing, { maxWidth: descriptionTextWidth });
 
         doc.setDrawColor(blackColor);
         doc.setLineWidth(0.5);
-        doc.line(10, observationsStartY + observationsLineSpacing * 1, 200, observationsStartY + observationsLineSpacing * 1); // Line 1
+        doc.line(10, observationsStartY + observationsLineSpacing * 1.10, 200, observationsStartY + observationsLineSpacing * 1.10); // Line 1
         doc.line(10, observationsStartY + observationsLineSpacing * 2, 200, observationsStartY + observationsLineSpacing * 2); // Line 2
 
         doc.save('ordem_de_servico.pdf');
