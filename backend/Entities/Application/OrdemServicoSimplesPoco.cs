@@ -7,6 +7,9 @@
 		public string? Numero { get; set; }
 		public string? NumeroPrisma { get; set; }
 		public string? Contato { get; set; }
+		public string? NomeCliente { get; set; }
+		public string? CargoCliente { get; set; }
+		public string? RgCliente { get; set; }
 		public string? Telefone { get; set; }
 		public string? Colp { get; set; }
 		public string? Endereco { get; set; }
