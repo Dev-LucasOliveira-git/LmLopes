@@ -50,7 +50,12 @@ namespace Infra.Repositories.Generics
 
 		public async Task<T?> GetEntityById(int Id)
 		{
-			return await _context.Set<T>().FindAsync(Id);
+			var entity = _context.Set<T>().Find(Id);
+
+			if (entity != null)
+				_context.Entry(entity).State = EntityState.Detached;
+			
+			return entity;
 		}
 
 		public async Task Update(T Obj)

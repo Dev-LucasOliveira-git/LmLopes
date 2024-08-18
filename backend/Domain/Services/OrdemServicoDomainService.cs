@@ -43,6 +43,26 @@ namespace Domain.Services
 			await _ordemServicoSimplesRepository.Add(OrdemServico);
 		}
 
+		public async Task AtualizarOrdemServico(OrdemServicoSimplesPoco ordemServico)
+		{
+
+			ordemServico.IdUsuario = await _tokenDomainService.GetIdUsuario();
+			ordemServico.DataHora = DateTime.Now;
+
+
+			var entityOld = _ordemServicoSimplesRepository.GetEntityById(ordemServico.IdOrdem);
+
+
+
+			if (entityOld != null)
+			{
+				await _ordemServicoSimplesRepository.Update(ordemServico);	
+
+			}
+			else
+				throw new EntityNotFound("Ordem de Serviço não encontrada");
+		}
+
 		public async Task CancelarOrdemServico(int idOrdemServico)
 		{
 			await _ordemServicoRepository.Delete(null);
@@ -59,20 +79,14 @@ namespace Domain.Services
 		public async Task<List<OrdemServicoSimplesPoco>> GetAllSimples()
 		{
 
-			var OrdemServicos = await _ordemServicoSimplesRepository.GetAll();
+			var OrdemServicos = await _ordemServicoSimplesRepository.GetAll("MateriaisUtilizados");
 			return OrdemServicos;
 		}
-		public async Task<OrdemServicoPoco> GetOrdemServico(int idOrdemServico)
+		public async Task<OrdemServicoSimplesPoco> GetOrdemServico(int idOrdemServico)
 		{
 
-			var ordemServicos = await _ordemServicoRepository.GetByExpression(x => x.IdOrdem == idOrdemServico,
-																			   "Engenheiro",
-																			   "Equipamento",
-																			   "MateriaisUtilizados",
-																			   "Cliente",
-																			   "Atividade",
-																			   "Defeito",
-																			   "Usuario"
+			var ordemServicos = await _ordemServicoSimplesRepository.GetByExpression(x => x.IdOrdem == idOrdemServico,
+																			   "MateriaisUtilizados"
 																			   );
 
 			var ordemServico = ordemServicos.FirstOrDefault();

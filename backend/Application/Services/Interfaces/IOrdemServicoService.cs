@@ -6,11 +6,10 @@ namespace Application.Services.Interfaces
 	{
 		Task<ResultService> CadastrarOrdemServico(CadastroOrdemDTO OrdemServico);
 		Task<ResultService> CadastrarOrdemServico(CadastroOrdemSimplesDTO OrdemServico);
-
 		Task<ResultService> GetOrdemServico(int idOrdemServico);
 		Task<ResultService> CancelarOrdemServico(int idOrdemServico);
 		Task<ResultService> GetAll();
 		Task<ResultService> GetAllSimples();
-
+		Task <ResultService> AtualizarOrdemServico(OrdemServicoSimplesDTO ordemServicoDTO);
 	}
 }

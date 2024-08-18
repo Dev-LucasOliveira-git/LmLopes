@@ -7,10 +7,10 @@ namespace Domain.Services.Interfaces
 		Task CadastrarOrdemServico(OrdemServicoPoco OrdemServico);
 		Task CadastrarOrdemServico(OrdemServicoSimplesPoco OrdemServico);
 
-		Task<OrdemServicoPoco> GetOrdemServico(int idOrdemServico);
+		Task<OrdemServicoSimplesPoco> GetOrdemServico(int idOrdemServico);
 		Task CancelarOrdemServico(int idOrdemServico);
 		Task<List<OrdemServicoPoco>> GetAll();
 		Task<List<OrdemServicoSimplesPoco>> GetAllSimples();
-
+		Task AtualizarOrdemServico(OrdemServicoSimplesPoco ordemServico);
 	}
 }

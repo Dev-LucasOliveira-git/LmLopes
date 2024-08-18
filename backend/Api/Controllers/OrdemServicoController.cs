@@ -19,7 +19,7 @@ namespace Api.Controllers
 		}
 
 		[HttpGet]
-		[Route("GetOrdemServico/{idOrdemServico}")]
+		[Route("consulta/{idOrdemServico}")]
 		public async Task<ActionResult> Get([FromRoute] int idOrdemServico)
 		{
 			var result = await _OrdemServicoService.GetOrdemServico(idOrdemServico);
@@ -64,6 +64,14 @@ namespace Api.Controllers
 			return Ok(result);
 		}
 
+		[HttpPut]
+		public async Task<ActionResult> Update([FromBody] OrdemServicoSimplesDTO OrdemServicoDTO)
+		{
+
+			var result = await _OrdemServicoService.AtualizarOrdemServico(OrdemServicoDTO);
+
+			return Ok(result);
+		}
 
 		[HttpPost]
 		[Route("Cancelar/{idOrdemServico}")]

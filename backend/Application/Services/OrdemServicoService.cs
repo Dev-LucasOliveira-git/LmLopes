@@ -30,6 +30,18 @@ namespace Application.Services
 
 		}
 
+		public async Task<ResultService> AtualizarOrdemServico(OrdemServicoSimplesDTO OrdemServicoDTO)
+		{
+
+			var OrdemServico = _mapper.Map<OrdemServicoSimplesPoco>(OrdemServicoDTO);
+
+			await _OrdemServicoDomainService.AtualizarOrdemServico(OrdemServico);
+
+
+			return ResultService.Ok(OrdemServico.IdOrdem);
+
+		}
+
 		public async Task<ResultService> CadastrarOrdemServico(CadastroOrdemSimplesDTO OrdemServicoDTO)
 		{
 
@@ -71,7 +83,7 @@ namespace Application.Services
 
 			var ordemServico = await _OrdemServicoDomainService.GetOrdemServico(idOrdemServico);
 
-			return ResultService.Ok(_mapper.Map<OrdemServicoDTO>(ordemServico));
+			return ResultService.Ok(_mapper.Map<OrdemServicoSimplesDTO>(ordemServico));
 
 		}
 	}
