@@ -63,7 +63,7 @@ export class ListagemPdfComponent implements OnInit {
         const imgWidth = img.width;
         const imgHeight = img.height;
         const imgRatio = imgHeight / imgWidth;
-        const imgDisplayWidth = 40;
+        const imgDisplayWidth = 70;
         const imgDisplayHeight = imgDisplayWidth * imgRatio;
         const blueColor = '#366183';
         const blackColor = '#000';
@@ -84,8 +84,6 @@ export class ListagemPdfComponent implements OnInit {
 
         doc.setTextColor(blackColor)
         doc.text('CNPJ: 23.030.998/0001-72 / I.E 144.891.861.113', textX, startY + lineSpacing * 3, { align: 'right' });
-
-
 
         doc.setDrawColor(blueColor);
         doc.setLineWidth(1);
@@ -151,12 +149,10 @@ export class ListagemPdfComponent implements OnInit {
         const activityCol1X = 10; 
         const activityCol2X = 110; 
 
-        // Activity table header
         doc.setTextColor(blackColor);
         doc.text('Atividade', activityCol1X + 2, activityTableStartY);
         doc.text('Defeito', activityCol2X + 2, activityTableStartY);
 
-        // Activity rows
         const markX = (condition: boolean) => condition ? 'X' : '  ';
 
         doc.text(`(${markX(pdf.atividade === 'Preventiva')}) Preventiva`, activityCol1X + 2, activityTableStartY + activityLineSpacing);
@@ -170,18 +166,16 @@ export class ListagemPdfComponent implements OnInit {
         doc.text(`(${markX(pdf.defeito === 'Outros')}) Outros`, activityCol2X + 2, activityTableStartY + activityLineSpacing * 4);
         doc.text(`(${markX(pdf.atividade === 'Outros')}) Outros`, activityCol1X + 2, activityTableStartY + activityLineSpacing * 5);
 
-        // Complement fields
-        const complementStartY = activityTableStartY + activityLineSpacing * 6; // Start Y position for the complement fields
+        const complementStartY = activityTableStartY + activityLineSpacing * 6; 
         doc.text(`${pdf.complementoAtividade || ''}`, activityCol1X + 2, complementStartY);
         doc.text(`${pdf.complementoDefeito || ''}`, activityCol2X + 2, complementStartY);
 
-        // Activity and defect table borders
         doc.setLineWidth(0.5);
-        doc.line(activityTableX1, activityTableStartY - 4, activityTableX2, activityTableStartY - 4); // Top border
-        doc.line(activityTableX1, complementStartY + 2, activityTableX2, complementStartY + 2); // Bottom border
-        doc.line(activityTableX1, activityTableStartY - 4, activityTableX1, complementStartY + 2); // Left border
-        doc.line(activityTableX2, activityTableStartY - 4, activityTableX2, complementStartY + 2); // Right border
-        doc.line(activityCol2X - 1, activityTableStartY - 4, activityCol2X - 1, complementStartY + 2); // Column 1-2 divider
+        doc.line(activityTableX1, activityTableStartY - 4, activityTableX2, activityTableStartY - 4); 
+        doc.line(activityTableX1, complementStartY + 2, activityTableX2, complementStartY + 2); 
+        doc.line(activityTableX1, activityTableStartY - 4, activityTableX1, complementStartY + 2); 
+        doc.line(activityTableX2, activityTableStartY - 4, activityTableX2, complementStartY + 2); 
+        doc.line(activityCol2X - 1, activityTableStartY - 4, activityCol2X - 1, complementStartY + 2); 
 
         const servicesStartY = activityTableStartY + activityLineSpacing * 6 + 15; 
         const servicesLineSpacing = 6; 
@@ -198,10 +192,9 @@ export class ListagemPdfComponent implements OnInit {
         doc.setFont('Helvetica', 'bold');
         doc.text(boldText, 10, servicesStartY + servicesLineSpacing, { maxWidth: descriptionTextWidth });
         
-        var underlineThickness = 0.5; // Espessura da linha
-        var underlineOffset = 1; // Distância do texto ao sublinhado (ajuste conforme necessário)        
-        // Desenha a linha do sublinhado
-        doc.setDrawColor(0, 0, 0); // RGB para preto
+        var underlineThickness = 0.5; 
+        var underlineOffset = 1;       
+        doc.setDrawColor(0, 0, 0); 
         doc.setLineWidth(underlineThickness);
         doc.line(10 + doc.getTextWidth(`${markX(pdf.limpeza)}) `)+1, servicesStartY + servicesLineSpacing + underlineOffset, 10 + doc.getTextWidth(boldText), servicesStartY + servicesLineSpacing+ underlineOffset);
 
@@ -214,29 +207,25 @@ export class ListagemPdfComponent implements OnInit {
         doc.setFont('Helvetica', 'bold');
         doc.text(boldText, 10, servicesStartY + servicesLineSpacing * 2.2, { maxWidth: descriptionTextWidth });
        
-       
-        var underlineThickness = 0.5; // Espessura da linha
-        var underlineOffset = 1; // Distância do texto ao sublinhado (ajuste conforme necessário)        
-        // Desenha a linha do sublinhado
-        doc.setDrawColor(0, 0, 0); // RGB para preto
+        var underlineThickness = 0.5; 
+        var underlineOffset = 1;      
+     
+        doc.setDrawColor(0, 0, 0);
         doc.setLineWidth(underlineThickness);
         doc.line(10 + doc.getTextWidth(`${markX(pdf.ajuste)}) `)+1, (servicesStartY + servicesLineSpacing * 2.2 ) + underlineOffset, 10 + doc.getTextWidth(boldText), (servicesStartY + servicesLineSpacing * 2.2 )+ underlineOffset);
 
        
-       
         doc.setFont('Helvetica', 'normal');
         doc.text(textAfterBold, 10 + doc.getTextWidth(boldText) + 1, servicesStartY + servicesLineSpacing * 2.2, { maxWidth: descriptionTextWidth });
-
 
         boldText = `(${markX(pdf.lubrificacao)}) Lubrificação: `;
         textAfterBold = 'Sistema de refrigeração da fonte de iluminação, movimentos articulados, substituição de lubrificantes especiais.';
         doc.setFont('Helvetica', 'bold');
         doc.text(boldText, 10, servicesStartY + servicesLineSpacing * 4, { maxWidth: descriptionTextWidth });
         
-        var underlineThickness = 0.5; // Espessura da linha
-        var underlineOffset = 1; // Distância do texto ao sublinhado (ajuste conforme necessário)        
-        // Desenha a linha do sublinhado
-        doc.setDrawColor(0, 0, 0); // RGB para preto
+        var underlineThickness = 0.5; 
+        var underlineOffset = 1;     
+        doc.setDrawColor(0, 0, 0); 
         doc.setLineWidth(underlineThickness);
         doc.line(10 + doc.getTextWidth(`${markX(pdf.lubrificacao)}) `)+1, (servicesStartY + servicesLineSpacing * 4 ) + underlineOffset, 10 + doc.getTextWidth(boldText), (servicesStartY + servicesLineSpacing * 4 )+ underlineOffset);
 
@@ -252,10 +241,10 @@ export class ListagemPdfComponent implements OnInit {
         doc.setFont('Helvetica', 'bold');
 
         doc.text('Observações:', 10, observationsStartY);
-        underlineThickness = 0.5; // Espessura da linha
-        underlineOffset = 1; // Distância do texto ao sublinhado (ajuste conforme necessário)        
-        // Desenha a linha do sublinhado
-        doc.setDrawColor(0, 0, 0); // RGB para preto
+        underlineThickness = 0.5;
+        underlineOffset = 1;      
+
+        doc.setDrawColor(0, 0, 0); 
         doc.setLineWidth(underlineThickness);
         doc.line(10, observationsStartY + underlineOffset, 10 + doc.getTextWidth("Observações:"), observationsStartY + underlineOffset);
 
@@ -266,7 +255,7 @@ export class ListagemPdfComponent implements OnInit {
 
         doc.setDrawColor(blackColor);
         doc.setLineWidth(0.5);
-        doc.line(10, observationsStartY + observationsLineSpacing * 1.10, 200, observationsStartY + observationsLineSpacing * 1.10); // Line 1
+        doc.line(10, observationsStartY + observationsLineSpacing * 1.10, 200, observationsStartY + observationsLineSpacing * 1.10);
         doc.line(10, observationsStartY + observationsLineSpacing * 2, 200, observationsStartY + observationsLineSpacing * 2); 
         
         const materialsStartY = servicesStartY + servicesLineSpacing * 10; 
@@ -295,6 +284,28 @@ export class ListagemPdfComponent implements OnInit {
         doc.line(activityTableX2, materialsStartY + materialsLineSpacing - 4, activityTableX2, materialsStartY + materialsLineSpacing * (pdf.materiaisUtilizados.length + 2) - 4); 
         doc.line(col2X - 1, materialsStartY + materialsLineSpacing - 4, col2X - 1, materialsStartY + materialsLineSpacing * (pdf.materiaisUtilizados.length + 2) - 4); 
 
+             const conclusionStartY = servicesStartY + servicesLineSpacing * 15;
+
+             doc.setFontSize(8);
+             const conclusionText = `( ${pdf.trabalhoConcluido === 'SIM' ? 'X' : ' '} ) Sim  ( ${pdf.trabalhoConcluido === 'NÃO' ? 'X' : ' '} ) Não  ( ${pdf.trabalhoConcluido === 'AGUARDANDO PEÇAS' ? 'X' : ' '} ) Aguardando Peças`;
+             doc.setFontSize(10);
+             doc.text(`Trabalho Concluído: ${conclusionText}`, 10, conclusionStartY);     
+             const detailsStartY = conclusionStartY + servicesLineSpacing * 2;
+             doc.setFontSize(10);
+             doc.setFont('Helvetica', 'bold');
+             doc.text('Dados do Engenheiro / Técnico', 10, detailsStartY);
+             doc.text('Dados do Cliente', 110, detailsStartY);
+     
+             doc.setFont('Helvetica', 'normal');
+             doc.text(`Nome: ${pdf.nomeEngenheiro}`, 10, detailsStartY + 7);
+             doc.text(`RG / CREA: ${pdf.rg_Crea}`, 10, detailsStartY + 14);
+             doc.text('Assinatura: _____________________________', 10, detailsStartY + 21);
+
+     
+             doc.text(`Nome: ${pdf.nomeCliente}`, 110, detailsStartY + 7);
+             doc.text(`Cargo: ${pdf.cargoCliente}`, 110, detailsStartY + 14);
+             doc.text('Assinatura: _____________________________', 110, detailsStartY + 21);
+     
         doc.save(`OS_${pdf.numero}.pdf`);
     };
 }
