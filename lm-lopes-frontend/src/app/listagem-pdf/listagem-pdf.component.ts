@@ -144,12 +144,12 @@ export class ListagemPdfComponent implements OnInit {
         doc.line(col3X, tableStartY - 4, col3X, tableStartY + tableLineSpacing + 2); 
 
 
-        const activityTableStartY = tableStartY + tableLineSpacing * 3; // Start Y position for the new section
-        const activityLineSpacing = 6; // Line spacing for the activity rows
-        const activityTableX1 = 10; // X coordinate for the left table border
-        const activityTableX2 = 200; // X coordinate for the right table border
-        const activityCol1X = 10; // X coordinate for the first column
-        const activityCol2X = 110; // X coordinate for the second column
+        const activityTableStartY = tableStartY + tableLineSpacing * 3; 
+        const activityLineSpacing = 6; 
+        const activityTableX1 = 10; 
+        const activityTableX2 = 200; 
+        const activityCol1X = 10; 
+        const activityCol2X = 110; 
 
         // Activity table header
         doc.setTextColor(blackColor);
@@ -267,9 +267,35 @@ export class ListagemPdfComponent implements OnInit {
         doc.setDrawColor(blackColor);
         doc.setLineWidth(0.5);
         doc.line(10, observationsStartY + observationsLineSpacing * 1.10, 200, observationsStartY + observationsLineSpacing * 1.10); // Line 1
-        doc.line(10, observationsStartY + observationsLineSpacing * 2, 200, observationsStartY + observationsLineSpacing * 2); // Line 2
+        doc.line(10, observationsStartY + observationsLineSpacing * 2, 200, observationsStartY + observationsLineSpacing * 2); 
+        
+        const materialsStartY = servicesStartY + servicesLineSpacing * 10; 
+        const materialsLineSpacing = 6; 
 
-        doc.save('ordem_de_servico.pdf');
+        doc.setFont('Helvetica', 'bold');
+        doc.text('Materiais Utilizados:', 10, materialsStartY);
+
+        doc.setFont('Helvetica', 'normal');
+        doc.text('Qtd', col1X + 2, materialsStartY + materialsLineSpacing);
+        doc.text('Descrição', col2X + 2, materialsStartY + materialsLineSpacing);
+
+        const drawMaterialRow = (y: number, material: any) => {
+            doc.text(material.quantidade.toString(), col1X + 2, y);
+            doc.text(material.descricao, col2X + 2, y);
+        };
+
+        pdf.materiaisUtilizados.forEach((material: any, index: number) => {
+            drawMaterialRow(materialsStartY + materialsLineSpacing * (index + 2), material);
+        });
+
+        doc.setLineWidth(0.5);
+        doc.line(activityTableX1, materialsStartY + materialsLineSpacing - 4, activityTableX2, materialsStartY + materialsLineSpacing - 4); 
+        doc.line(activityTableX1, materialsStartY + materialsLineSpacing * (pdf.materiaisUtilizados.length + 2) - 4, activityTableX2, materialsStartY + materialsLineSpacing * (pdf.materiaisUtilizados.length + 2) - 4); 
+        doc.line(activityTableX1, materialsStartY + materialsLineSpacing - 4, activityTableX1, materialsStartY + materialsLineSpacing * (pdf.materiaisUtilizados.length + 2) - 4); 
+        doc.line(activityTableX2, materialsStartY + materialsLineSpacing - 4, activityTableX2, materialsStartY + materialsLineSpacing * (pdf.materiaisUtilizados.length + 2) - 4); 
+        doc.line(col2X - 1, materialsStartY + materialsLineSpacing - 4, col2X - 1, materialsStartY + materialsLineSpacing * (pdf.materiaisUtilizados.length + 2) - 4); 
+
+        doc.save(`OS_${pdf.numero}.pdf`);
     };
 }
 

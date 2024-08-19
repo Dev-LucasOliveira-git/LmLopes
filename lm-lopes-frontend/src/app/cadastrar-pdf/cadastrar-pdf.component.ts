@@ -42,6 +42,9 @@ export class CadastrarPdfComponent implements OnInit {
       lubrificacao: [false],
       obs: [''],
       nomeEngenheiro: ['', Validators.required],
+      nomeCliente: ['',Validators.required],
+      rgCliente: ['',Validators.required],
+      cargoCliente:['',Validators.required],
       rg_Crea: ['', Validators.required],
       materiaisUtilizados: this.fb.array([])
     });
