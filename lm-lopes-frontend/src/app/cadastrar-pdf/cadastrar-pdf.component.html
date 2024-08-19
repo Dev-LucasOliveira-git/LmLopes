@@ -116,6 +116,20 @@
             </div>
         </div>
         <div class="row mb-3">
+            <label for="nomeCliente" class="col-sm-2 col-form-label">Nome do Cliente</label>
+            <div class="col-sm-4">
+                <input type="text" id="nomeCliente" formControlName="nomeCliente" class="form-control">
+            </div>
+            <label for="rgCliente" class="col-sm-2 col-form-label">Rg do Cliente</label>
+            <div class="col-sm-4">
+                <input type="text" id="rgCliente" formControlName="rgCliente" class="form-control">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="rgCliente" class="col-sm-2 col-form-label">Cargo do Cliente</label>
+            <div class="col-sm-4">
+                <input type="text" id="rgCliente" formControlName="rgCliente" class="form-control">
+            </div>
             <label for="obs" class="col-sm-2 col-form-label">Observações</label>
             <div class="col-sm-4">
                 <textarea id="obs" formControlName="obs" class="form-control"></textarea>
@@ -128,8 +142,8 @@
                 <div formArrayName="materiaisUtilizados">
                     <div *ngFor="let material of materiaisUtilizados.controls; let i = index" [formGroupName]="i" class="row mb-3">
                         <div class="col-sm-4">
-                            <label for="descricao" class="col-sm-2 col-form-label">Descricao</label>
-                            <input type="text" placeholder="Descrição" formControlName="descricao" class="form-control">
+                            <label for="descricao" class="col-sm-2 col-form-label">Material</label>
+                            <input type="text" placeholder="Material" formControlName="descricao" class="form-control">
                         </div>
                         <div class="col-sm-2">
                             <label for="quantidade" class="col-sm-2 col-form-label">Quantidade</label>
