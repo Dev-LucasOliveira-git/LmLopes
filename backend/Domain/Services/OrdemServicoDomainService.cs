@@ -11,16 +11,18 @@ namespace Domain.Services
 		private readonly IOrdemServicoRepository _ordemServicoRepository;
 		private readonly IOrdemServicoSimplesRepository _ordemServicoSimplesRepository;
 		private readonly ITokenDomainService _tokenDomainService;
-
+		private readonly IMaterialUtilizadoRepository _materialUtilizadoRepository;
 
 
 		public OrdemServicoDomainService(IOrdemServicoRepository ordemServicoRepository,
 									IOrdemServicoSimplesRepository ordemServicoSimplesRepository,
-								  ITokenDomainService tokenDomainService)
+								  ITokenDomainService tokenDomainService,
+								  IMaterialUtilizadoRepository materialUtilizadoRepository)
 		{
 			_ordemServicoRepository = ordemServicoRepository;
 			_ordemServicoSimplesRepository = ordemServicoSimplesRepository;
 			_tokenDomainService = tokenDomainService;
+			_materialUtilizadoRepository = materialUtilizadoRepository;
 		}
 
 		public async Task CadastrarOrdemServico(OrdemServicoPoco OrdemServico)
@@ -52,12 +54,14 @@ namespace Domain.Services
 
 			var entityOld = _ordemServicoSimplesRepository.GetEntityById(ordemServico.IdOrdem);
 
-
-
 			if (entityOld != null)
 			{
-				await _ordemServicoSimplesRepository.Update(ordemServico);	
+				await _ordemServicoSimplesRepository.ExecuteInTransactionAsync(async () =>
+				{
+					await _materialUtilizadoRepository.DeleteRangeAsync(x => x.IdOrdemServicoSimples == ordemServico.IdOrdem);										
+					await _ordemServicoSimplesRepository.Update(ordemServico);		
 
+				});
 			}
 			else
 				throw new EntityNotFound("Ordem de Serviço não encontrada");

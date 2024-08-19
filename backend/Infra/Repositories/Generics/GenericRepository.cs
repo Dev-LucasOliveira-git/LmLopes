@@ -79,6 +79,28 @@ namespace Infra.Repositories.Generics
 
 		}
 
+		public async Task DeleteRangeAsync(Expression<Func<T, bool>> predicate)
+		{
+			var entities = await _context.Set<T>().Where(predicate).ToListAsync();
+			_context.Set<T>().RemoveRange(entities);
+		}
+
+		public async Task ExecuteInTransactionAsync(Func<Task> action)
+		{
+			using var transaction = await _context.Database.BeginTransactionAsync();
+			try
+			{
+				await action();
+				await _context.SaveChangesAsync();
+				await transaction.CommitAsync();
+			}
+			catch
+			{
+				await transaction.RollbackAsync();
+				throw;
+			}
+		}
+
 
 		#region Disposed https://docs.microsoft.com/pt-br/dotnet/standard/garbage-collection/implementing-dispose
 		// Flag: Has Dispose already been called?
