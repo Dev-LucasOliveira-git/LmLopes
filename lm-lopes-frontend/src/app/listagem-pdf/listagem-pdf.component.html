@@ -16,8 +16,8 @@
 
   <ng-container matColumnDef="dataHora">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Data</mat-header-cell>
-    <mat-cell *matCellDef="let pdf">{{ pdf.dataHora }}</mat-cell>
-  </ng-container>
+    <mat-cell *matCellDef="let pdf">{{ pdf.dataHora | date: 'dd/MM/yyyy HH:mm' }}</mat-cell>
+  </ng-container>  
 
   <ng-container matColumnDef="equipamento">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Equipamento</mat-header-cell>
@@ -25,13 +25,24 @@
   </ng-container>
 
   <ng-container matColumnDef="acao">
-    <mat-header-cell *matHeaderCellDef> Download </mat-header-cell>
-    <mat-cell *matCellDef="let pdf">
-      <button mat-butto class="btn btn-primary" (click)="onRowClicked(pdf)">
+    <mat-header-cell *matHeaderCellDef class="action-cell">Download</mat-header-cell>
+    <mat-cell *matCellDef="let pdf" class="action-cell">
+      <button mat-button class="btn btn-primary" (click)="onRowClicked(pdf)">
         <fa-icon [icon]="faDownload" size="lg" class="iconHeight mx-2"></fa-icon>
-        </button>
+      </button>
     </mat-cell>
   </ng-container>
+  
+  <ng-container matColumnDef="editar">
+    <mat-header-cell *matHeaderCellDef class="action-cell">Editar</mat-header-cell>
+    <mat-cell *matCellDef="let pdf" class="action-cell">
+      <button mat-button class="btn btn-secondary" (click)="editar(pdf.idOrdem)">
+        <fa-icon [icon]="faPen" size="lg" class="iconHeight mx-2"></fa-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+  
+  
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"

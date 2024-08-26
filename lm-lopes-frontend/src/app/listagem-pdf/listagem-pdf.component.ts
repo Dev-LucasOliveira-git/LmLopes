@@ -4,8 +4,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ServiceService } from '../shared/service.service';
 import { catchError, map, of } from 'rxjs';
-import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faPen } from '@fortawesome/free-solid-svg-icons';
 import jsPDF from 'jspdf';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listagem-pdf',
@@ -15,19 +16,35 @@ import jsPDF from 'jspdf';
 export class ListagemPdfComponent implements OnInit {
 
   faDownload = faDownload;
+  faPen = faPen
 
-  displayedColumns: string[] = ['nomeEngenheiro', 'dataHora', 'equipamento', 'acao'];
+  displayedColumns: string[] = ['nomeEngenheiro', 'dataHora', 'equipamento', 'acao', 'editar'];
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private service: ServiceService) { }
+  constructor(
+    private service: ServiceService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     console.log("Component initialized");
     this.carregar();
   }
+
+  editar(id: any) {
+    this.service.getPdfById(id).subscribe(
+      (pdfData) => {
+        this.router.navigate(['/cadastrar-pdf'], { state: { pdfData: pdfData } });
+      },
+      (error) => {
+        console.error('Error retrieving PDF data:', error);
+      }
+    );
+  }
+  
 
   public carregar() {
     this.service.listarOrdemServico().pipe(
@@ -52,6 +69,18 @@ export class ListagemPdfComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  formatDateTime(dateString: string | number | Date) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
 
   async onRowClicked(pdf: any) {
@@ -129,9 +158,13 @@ export class ListagemPdfComponent implements OnInit {
         doc.text('Início', col2X + 2, tableStartY);
         doc.text('Término', col3X + 2, tableStartY);
 
-        doc.text(pdf.dataHora, col1X + 2, tableStartY + tableLineSpacing);
-        doc.text(pdf.horaInicio, col2X + 2, tableStartY + tableLineSpacing);
-        doc.text(pdf.horaFim, col3X + 2, tableStartY + tableLineSpacing);
+        const formattedDataHora = this.formatDateTime(pdf.dataHora);
+        const formattedHoraInicio = this.formatDateTime(pdf.horaInicio);
+        const formattedHoraFim = this.formatDateTime(pdf.horaFim);
+        
+        doc.text(formattedDataHora, col1X + 2, tableStartY + tableLineSpacing);
+        doc.text(formattedHoraInicio, col2X + 2, tableStartY + tableLineSpacing);
+        doc.text(formattedHoraFim, col3X + 2, tableStartY + tableLineSpacing);
 
         doc.setLineWidth(0.5);
         doc.line(tableX1, tableStartY - 4, tableX2, tableStartY - 4); 

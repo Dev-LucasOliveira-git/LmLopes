@@ -21,6 +21,7 @@ export class ServiceService {
     listar: `${this.host}/OrdemServico`,
     cadastrar: `${this.host}/OrdemServico`,
     listarUsuarios: `${this.host}/Usuario`,
+    listarUsuariosPorId: `${this.host}/OrdemServico/consulta/`,
     cadastrarUsuarios: `${this.host}/Usuario/Add`,
   };
 
@@ -34,8 +35,16 @@ export class ServiceService {
     return this.http.post<any>(this.endpoint.cadastrar, dados, { headers: this.getAuthHeaders() });
   }
 
+  editarOrdemServico(dados: any): Observable<any> {
+    return this.http.put<any>(this.endpoint.cadastrar, dados, { headers: this.getAuthHeaders() });
+  }
+
   listarUsuarios(): Observable<any> {
     return this.http.get<any>(this.endpoint.listarUsuarios, { headers: this.getAuthHeaders() });
+  }
+
+  getPdfById(id:any){
+    return this.http.get<any>(this.endpoint.listarUsuariosPorId + id, { headers: this.getAuthHeaders() });
   }
 
   cadastrarUsuario(dados: any): Observable<any> {

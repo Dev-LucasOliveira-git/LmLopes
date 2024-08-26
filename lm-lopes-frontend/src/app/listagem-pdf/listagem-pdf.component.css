@@ -1,3 +1,57 @@
 .container-listagem{
     height: 42em;
 }
+/* Estilos gerais para desktop */
+.mat-table {
+    width: 100%;
+  }
+  
+  .mat-header-cell, .mat-cell {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .action-cell {
+    flex: 0 0 80px; /* Largura das colunas de ação para desktop */
+    text-align: center;
+    padding: 0 4px;
+  }
+  
+  .mat-cell button {
+    min-width: 30px;
+    padding: 0;
+  }
+  
+  .iconHeight {
+    height: 20px;
+  }
+  
+  .container-listagem {
+    height: 42em;
+  }
+  
+  /* Ajustes para dispositivos móveis */
+  @media (max-width: 768px) {
+    .action-cell {
+      flex: 0 0 60px; /* Reduz a largura das colunas de ação em telas menores */
+    }
+  
+    .mat-cell button {
+      min-width: 15px; /* Reduz ainda mais a largura mínima dos botões */
+    }
+  
+    .iconHeight {
+      height: 16px; /* Reduz a altura do ícone para caber melhor em telas menores */
+    }
+  
+    .mat-header-cell, .mat-cell {
+      font-size: 0.9em; /* Reduz o tamanho da fonte para melhor ajuste em mobile */
+      padding: 0 2px; /* Reduz o padding para telas menores */
+    }
+  
+    .container-listagem {
+      height: auto; /* Ajusta a altura da lista para caber no conteúdo */
+    }
+  }
+  
+  
