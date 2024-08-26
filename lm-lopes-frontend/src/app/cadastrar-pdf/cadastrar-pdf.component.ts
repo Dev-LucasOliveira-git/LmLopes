@@ -145,7 +145,7 @@ export class CadastrarPdfComponent implements OnInit {
   onSubmit(): void {
     if (this.cadastroForm.valid) {
       if (this.pdfData != null) {
-        const updatedFormValue = { ...this.cadastroForm.value, idOrdem: this.pdfData.data.idOrdem };
+        const updatedFormValue = { ...this.cadastroForm.getRawValue(), idOrdem: this.pdfData.data.idOrdem };
           this.serviceService.editarOrdemServico(updatedFormValue).subscribe(
           response => {
             console.log('Form submitted successfully', response);

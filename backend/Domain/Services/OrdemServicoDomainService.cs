@@ -49,8 +49,6 @@ namespace Domain.Services
 		{
 
 			ordemServico.IdUsuario = await _tokenDomainService.GetIdUsuario();
-			ordemServico.DataHora = DateTime.Now;
-
 
 			var entityOld = _ordemServicoSimplesRepository.GetEntityById(ordemServico.IdOrdem);
 
