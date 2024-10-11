@@ -2,6 +2,7 @@
 using Domain.Interfaces;
 using Domain.Services.Interfaces;
 using Entities.Application;
+using Microsoft.AspNetCore.Http;
 
 
 namespace Domain.Services
@@ -98,6 +99,24 @@ namespace Domain.Services
 
 			return ordemServico;
 
+		}
+
+		public async Task ProcessaAssinaturaOrdem(int idOrdem, byte[] imagem)
+		{
+			
+			var entity = await _ordemServicoSimplesRepository.GetEntityById(idOrdem);
+			entity.ImgAssinatura = imagem;
+
+			if (entity != null)
+			{
+				await _ordemServicoSimplesRepository.ExecuteInTransactionAsync(async () =>
+				{
+					await _ordemServicoSimplesRepository.Update(entity);
+
+				});
+			}
+			else
+				throw new EntityNotFound("Ordem de Serviço não encontrada");
 		}
 	}
 }

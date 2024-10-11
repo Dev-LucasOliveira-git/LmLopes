@@ -1,4 +1,6 @@
 ﻿using Entities.Application;
+using Microsoft.AspNetCore.Http;
+using System.Security.Cryptography;
 
 namespace Domain.Services.Interfaces
 {
@@ -12,5 +14,7 @@ namespace Domain.Services.Interfaces
 		Task<List<OrdemServicoPoco>> GetAll();
 		Task<List<OrdemServicoSimplesPoco>> GetAllSimples();
 		Task AtualizarOrdemServico(OrdemServicoSimplesPoco ordemServico);
+		Task ProcessaAssinaturaOrdem(int idOrdem, byte[] imagem);
+
 	}
 }

@@ -22,6 +22,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CadastrarUsuarioComponent } from './cadastrar-usuario/cadastrar-usuario.component';
+import { UploadFormComponent } from './cadastrar-pdf/assinatura-pdf/UploadFormComponent';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { CadastrarUsuarioComponent } from './cadastrar-usuario/cadastrar-usuario
     LoginComponent,
     ListagemPdfComponent,
     CadastrarPdfComponent,
+    UploadFormComponent,
     NavbarComponent,
     FooterComponent,
     CadastrarUsuarioComponent,

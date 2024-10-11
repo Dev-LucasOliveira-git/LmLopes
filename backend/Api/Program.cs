@@ -81,7 +81,7 @@ try
 	{
 		app.UseCors("DevelopmentCorsPolicy");
 		app.UseDeveloperExceptionPage();
-		app.UseHttpsRedirection();
+		//app.UseHttpsRedirection();
 
 	}	
 	else

@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { ListagemPdfComponent } from './listagem-pdf/listagem-pdf.component';
 import { CadastrarPdfComponent } from './cadastrar-pdf/cadastrar-pdf.component';
 import { CadastrarUsuarioComponent } from './cadastrar-usuario/cadastrar-usuario.component';
+import { UploadFormComponent } from './cadastrar-pdf/assinatura-pdf/UploadFormComponent';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -11,6 +12,7 @@ const routes: Routes = [
   { path: 'listagem-pdf', component: ListagemPdfComponent },
   { path: 'cadastrar-pdf', component: CadastrarPdfComponent },
   { path: 'cadastrar-usuario', component: CadastrarUsuarioComponent },
+  { path: 'assinatura', component: UploadFormComponent },
 ];
 
 @NgModule({

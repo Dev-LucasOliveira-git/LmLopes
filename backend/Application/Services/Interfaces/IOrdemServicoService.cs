@@ -1,4 +1,7 @@
-﻿using DTOs.DTOs.OrdemServico;
+﻿using DTOs.DTOs.Ordem;
+using DTOs.DTOs.OrdemServico;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services.Interfaces
 {
@@ -11,5 +14,8 @@ namespace Application.Services.Interfaces
 		Task<ResultService> GetAll();
 		Task<ResultService> GetAllSimples();
 		Task <ResultService> AtualizarOrdemServico(OrdemServicoSimplesDTO ordemServicoDTO);
+		Task <ResultService>ProcessaAssinaturaOrdemServico(AssinaturaOrdemUploadDTO imagem);
+		Task<byte[]?> GetAssinaturaOrdemServico(int idOrdemServico);
+
 	}
 }
