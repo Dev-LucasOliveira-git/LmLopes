@@ -29,7 +29,8 @@
 		public string? NomeEngenheiro { get; set; }
 		public string? Rg_Crea { get; set; }
 		public int IdUsuario { get; set; }
-		public byte[]? ImgAssinatura { get; set; }
+		public byte[]? ImgAssinaturaCliente { get; set; }
+		public byte[]? ImgAssinaturaEngenheiro { get; set; }
 
 		public UsuarioPoco Usuario { get; set; }
 		public ICollection<MaterialUtilizadoPoco>? MateriaisUtilizados { get; set; }

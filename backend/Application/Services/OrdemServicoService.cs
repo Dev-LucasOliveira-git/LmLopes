@@ -91,7 +91,7 @@ namespace Application.Services
 
 		}
 
-		public async Task<ResultService> ProcessaAssinaturaOrdemServico(AssinaturaOrdemUploadDTO imagem)
+		public async Task<ResultService> ProcessaAssinaturaClienteOrdemServico(AssinaturaOrdemUploadDTO imagem)
 		{
 			if (imagem.ImgForm == null || imagem.ImgForm.Length == 0)
 			{
@@ -101,20 +101,49 @@ namespace Application.Services
 			using (var memoryStream = new MemoryStream())
 			{
 				await imagem.ImgForm.CopyToAsync(memoryStream);
-				await _ordemServicoDomainService.ProcessaAssinaturaOrdem(imagem.IdOrdem, memoryStream.ToArray());
+				await _ordemServicoDomainService.ProcessaAssinaturaClienteOrdem(imagem.IdOrdem, memoryStream.ToArray());
 
 			}
 			return ResultService.Ok();
 
 		}
 
-		public async Task<byte[]?> GetAssinaturaOrdemServico(int idOrdemServico)
+		public async Task<ResultService> ProcessaAssinaturaEngenheiroOrdemServico(AssinaturaOrdemUploadDTO imagem)
+		{
+			if (imagem.ImgForm == null || imagem.ImgForm.Length == 0)
+			{
+				throw new ArgumentNullException("Imagem não pode ser vazia");
+			}
+
+			using (var memoryStream = new MemoryStream())
+			{
+				await imagem.ImgForm.CopyToAsync(memoryStream);
+				await _ordemServicoDomainService.ProcessaAssinaturaClienteOrdem(imagem.IdOrdem, memoryStream.ToArray());
+
+			}
+			return ResultService.Ok();
+
+		}
+
+		public async Task<byte[]?> GetClienteAssinaturaOrdemServico(int idOrdemServico)
 		{
 			var ordemServicoPoco = await _ordemServicoDomainService.GetOrdemServico(idOrdemServico);
 
 			
 			// Retorna o arquivo de imagem como um FileStreamResult com o tipo correto
-			return ordemServicoPoco.ImgAssinatura;
+			return ordemServicoPoco.ImgAssinaturaCliente;
+
+			//return ResultService.Ok();
+
+		}
+
+		public async Task<byte[]?> GetEngenheiroAssinaturaOrdemServico(int idOrdemServico)
+		{
+			var ordemServicoPoco = await _ordemServicoDomainService.GetOrdemServico(idOrdemServico);
+
+
+			// Retorna o arquivo de imagem como um FileStreamResult com o tipo correto
+			return ordemServicoPoco.ImgAssinaturaEngenheiro;
 
 			//return ResultService.Ok();
 

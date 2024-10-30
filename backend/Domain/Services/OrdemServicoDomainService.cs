@@ -101,11 +101,29 @@ namespace Domain.Services
 
 		}
 
-		public async Task ProcessaAssinaturaOrdem(int idOrdem, byte[] imagem)
+		public async Task ProcessaAssinaturaClienteOrdem(int idOrdem, byte[] imagem)
 		{
 			
 			var entity = await _ordemServicoSimplesRepository.GetEntityById(idOrdem);
-			entity.ImgAssinatura = imagem;
+			entity.ImgAssinaturaCliente = imagem;
+
+			if (entity != null)
+			{
+				await _ordemServicoSimplesRepository.ExecuteInTransactionAsync(async () =>
+				{
+					await _ordemServicoSimplesRepository.Update(entity);
+
+				});
+			}
+			else
+				throw new EntityNotFound("Ordem de Serviço não encontrada");
+		}
+
+		public async Task ProcessaAssinaturaEngenheiroOrdem(int idOrdem, byte[] imagem)
+		{
+
+			var entity = await _ordemServicoSimplesRepository.GetEntityById(idOrdem);
+			entity.ImgAssinaturaEngenheiro = imagem;
 
 			if (entity != null)
 			{

@@ -19,7 +19,8 @@ namespace Infra.Application.Configurations
 			builder.Property(entity => entity.IdOrdem).ValueGeneratedOnAdd();
 			builder.Property(entity => entity.Numero).IsRequired();
 			builder.Property(entity => entity.NumeroPrisma).IsRequired();
-			builder.Property(entity => entity.ImgAssinatura).HasColumnType("LONGBLOB").IsRequired(false);
+			builder.Property(entity => entity.ImgAssinaturaCliente).HasColumnType("LONGBLOB").IsRequired(false);
+			builder.Property(entity => entity.ImgAssinaturaEngenheiro).HasColumnType("LONGBLOB").IsRequired(false);
 
 			builder.Property(entity => entity.IdUsuario).IsRequired();
 			builder.Property(entity => entity.DataHora).IsRequired();

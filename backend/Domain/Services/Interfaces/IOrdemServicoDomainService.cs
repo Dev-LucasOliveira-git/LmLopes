@@ -14,7 +14,8 @@ namespace Domain.Services.Interfaces
 		Task<List<OrdemServicoPoco>> GetAll();
 		Task<List<OrdemServicoSimplesPoco>> GetAllSimples();
 		Task AtualizarOrdemServico(OrdemServicoSimplesPoco ordemServico);
-		Task ProcessaAssinaturaOrdem(int idOrdem, byte[] imagem);
+		Task ProcessaAssinaturaClienteOrdem(int idOrdem, byte[] imagem);
+		Task ProcessaAssinaturaEngenheiroOrdem(int idOrdem, byte[] imagem);
 
 	}
 }
