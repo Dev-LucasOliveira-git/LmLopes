@@ -23,6 +23,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CadastrarUsuarioComponent } from './cadastrar-usuario/cadastrar-usuario.component';
 import { UploadFormComponent } from './cadastrar-pdf/assinatura-pdf/UploadFormComponent';
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 
 
 @NgModule({
@@ -47,7 +49,8 @@ import { UploadFormComponent } from './cadastrar-pdf/assinatura-pdf/UploadFormCo
     FormsModule,
     HttpClientModule,
     FontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ModalModule.forRoot()
   ],
   providers: [
     provideClientHydration(),
