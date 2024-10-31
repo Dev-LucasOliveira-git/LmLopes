@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ServiceService } from '../shared/service.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { UploadFormComponent } from './assinatura-pdf/UploadFormComponent';
+
 
 @Component({
   selector: 'app-cadastrar-pdf',
@@ -14,11 +17,14 @@ export class CadastrarPdfComponent implements OnInit {
   isComplementoAtividadeEnabled = false;
   isComplementoDefeitoEnabled = false;
   pdfData: any; 
+  bsModalRef!: BsModalRef;
+
 
   constructor(
     private fb: FormBuilder, 
     private serviceService: ServiceService, 
-    private router: Router
+    private router: Router,
+    public modalService: BsModalService
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.pdfData = navigation?.extras?.state?.['pdfData'] || null;
@@ -171,6 +177,10 @@ export class CadastrarPdfComponent implements OnInit {
     } else {
       Swal.fire('Erro!', 'Preencha todos os campos obrigatórios.', 'error');
     }
+  }
+
+  openModalAssinatura() {
+    this.bsModalRef = this.modalService.show(UploadFormComponent);
   }
   
   }

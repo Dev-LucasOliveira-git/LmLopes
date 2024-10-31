@@ -1,20 +1,42 @@
-<form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="title">Título:</label>
-      <input id="title" formControlName="title" type="text" />
-    </div>
-  
-    <div>
-      <label for="image">Imagem:</label>
-      <input id="image" type="file" (change)="onFileSelected($event)" />
-    </div>
-  
-    <button type="submit" [disabled]="uploadForm.invalid">Enviar</button>
-  </form>
-  
+<div class="modal-header">
+  <h5 class="modal-title">Assinar Documento</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modalService.hide()"></button>
+</div>
 
-  <div *ngIf="imageUrl">
-    <img [src]="imageUrl" alt="Imagem Carregada" />
+<div >
+  <div class="modal-title">
+    <h2 class="text-center">Assinatura Engenheiro</h2>
+    <h5 class="text-center">Assine o Documento na Área Abaixo:</h5>
   </div>
 
-  <button (click)="loadImage()">Carregar Imagem</button>
+  <div class="d-flex justify-content-center">
+    <canvas class="border" #engineerCanvas></canvas>
+  </div>
+  <p class="error-message text-center mt-2" *ngIf="signatureNeeded && step === 'ENG'">A assinatura é obrigatória</p>
+
+  <div class="d-flex justify-content-center">
+    <button (click)="clearPad('ENG')" class="btn btn-warning my-2">Limpar</button>
+  </div>
+</div>
+
+<div >
+  <div class="modal-title">
+    <h2 class="text-center">Assinatura Cliente</h2>
+    <h5 class="text-center">Assine o Documento na Área Abaixo:</h5>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <canvas class="border" #clientCanvas></canvas>
+  </div>
+  <p class="error-message text-center mt-2" *ngIf="signatureNeeded && step === 'CLI'">A assinatura é obrigatória</p>
+
+  <div class="d-flex justify-content-center">
+    <button (click)="clearPad('CLI')" class="btn btn-warning my-2">Limpar</button>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button class="w-50 btn btn-primary" (click)="savePad()" [disabled]="signatureNeeded">
+    Enviar Assinaturas
+  </button>
+</div>

@@ -7,6 +7,8 @@ import { catchError, map, of } from 'rxjs';
 import { faDownload, faPen } from '@fortawesome/free-solid-svg-icons';
 import jsPDF from 'jspdf';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-listagem-pdf',
@@ -17,16 +19,20 @@ export class ListagemPdfComponent implements OnInit {
 
   faDownload = faDownload;
   faPen = faPen
+  imageUrl: any;
 
   displayedColumns: string[] = ['nomeEngenheiro', 'dataHora', 'equipamento', 'acao', 'editar'];
   dataSource = new MatTableDataSource<any>();
 
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private service: ServiceService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -83,7 +89,31 @@ export class ListagemPdfComponent implements OnInit {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
 
+  loadImage() {
+    this.http.get("http://localhost:5150/api/OrdemServico/assinatura/3", {
+      headers: this.getAuthHeaders(),
+      responseType: 'blob'
+    }).subscribe(
+      (blob) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+          this.imageUrl = reader.result as string;  // Armazena o base64 da imagem
+        };
+      },
+      (error) => console.error('Erro ao carregar imagem', error)
+    );
+  }
+
+  getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
   async onRowClicked(pdf: any) {
+    this. loadImage()
     const doc = new jsPDF();
     const img = new Image();
     img.src = 'assets/logo/logo-lm.png';
@@ -337,7 +367,9 @@ export class ListagemPdfComponent implements OnInit {
      
              doc.text(`Nome: ${pdf.nomeCliente}`, 110, detailsStartY + 7);
              doc.text(`Cargo: ${pdf.cargoCliente}`, 110, detailsStartY + 14);
-             doc.text('Assinatura: _____________________________', 110, detailsStartY + 21);
+             doc.addImage(this.imageUrl, 'JPEG', 110, detailsStartY + 21, 30, 10);  // Ajuste o tamanho e posição conforme necessário
+             doc.text(`Assinatura: _____________________________`, 110, detailsStartY + 21);
+
      
         doc.save(`OS_${pdf.numero}.pdf`);
     };
