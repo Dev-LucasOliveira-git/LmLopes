@@ -59,41 +59,23 @@ namespace Api.Controllers
 		}
 
 		[HttpPost]
-		[Route("assinatura/cliente")]
+		[Route("assinaturas")]
 
 		public async Task<ActionResult> AssinaOrdemCliente([FromForm] AssinaturaOrdemUploadDTO imagem)
 		{
-			var result = await _ordemServicoService.ProcessaAssinaturaClienteOrdemServico(imagem);
+			var result = await _ordemServicoService.ProcessaAssinaturasOrdemServico(imagem);
 			return Ok(result);
 		}
 
-		[HttpPost]
-		[Route("assinatura/engenheiro")]
 
-		public async Task<ActionResult> AssinaOrdemEngenheiro([FromForm] AssinaturaOrdemUploadDTO imagem)
+		[HttpGet]
+		[Route("assinaturas/{idOrdemServico}")]
+
+		public async Task<ActionResult> GetClienteAssinaturaOrdem([FromRoute] int idOrdemServico)
 		{
-			var result = await _ordemServicoService.ProcessaAssinaturaClienteOrdemServico(imagem);
+			var result = await _ordemServicoService.GetAssinaturasOrdemServico(idOrdemServico);
+
 			return Ok(result);
-		}
-
-		[HttpGet]
-		[Route("assinatura/cliente/{idOrdemServico}")]
-
-		public async Task<IActionResult> GetClienteAssinaturaOrdem([FromRoute] int idOrdemServico)
-		{
-			var result = await _ordemServicoService.GetClienteAssinaturaOrdemServico(idOrdemServico);
-
-			return this.File(result, "image/jpeg");
-		}
-
-		[HttpGet]
-		[Route("assinatura/engenheiro/{idOrdemServico}")]
-
-		public async Task<IActionResult> GetEngenheiroAssinaturaOrdem([FromRoute] int idOrdemServico)
-		{
-			var result = await _ordemServicoService.GetEngenheiroAssinaturaOrdemServico(idOrdemServico);
-
-			return this.File(result, "image/jpeg");
 		}
 
 		[HttpPost]

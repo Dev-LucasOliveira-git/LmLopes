@@ -10,6 +10,8 @@ namespace DTOs.DTOs.Ordem
 	public class AssinaturaOrdemUploadDTO
 	{
 		public int IdOrdem { get; set; }
-		public IFormFile ImgForm { get; set; }
+		public IFormFile ImgAssinaturaCliente { get; set; }
+		public IFormFile ImgAssinaturaEngenheiro { get; set; }
+
 	}
 }

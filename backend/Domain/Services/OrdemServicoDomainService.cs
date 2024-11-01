@@ -101,14 +101,16 @@ namespace Domain.Services
 
 		}
 
-		public async Task ProcessaAssinaturaClienteOrdem(int idOrdem, byte[] imagem)
+		public async Task ProcessaAssinaturasOrdem(int idOrdem, List<byte[]> imagens)
 		{
 			
 			var entity = await _ordemServicoSimplesRepository.GetEntityById(idOrdem);
-			entity.ImgAssinaturaCliente = imagem;
 
 			if (entity != null)
 			{
+				entity.ImgAssinaturaCliente = imagens[0];
+				entity.ImgAssinaturaEngenheiro = imagens[1];
+
 				await _ordemServicoSimplesRepository.ExecuteInTransactionAsync(async () =>
 				{
 					await _ordemServicoSimplesRepository.Update(entity);
@@ -119,19 +121,14 @@ namespace Domain.Services
 				throw new EntityNotFound("Ordem de Serviço não encontrada");
 		}
 
-		public async Task ProcessaAssinaturaEngenheiroOrdem(int idOrdem, byte[] imagem)
+		public async Task<List<byte[]>> GetAssinaturasOrdem(int idOrdem)
 		{
 
 			var entity = await _ordemServicoSimplesRepository.GetEntityById(idOrdem);
-			entity.ImgAssinaturaEngenheiro = imagem;
 
 			if (entity != null)
 			{
-				await _ordemServicoSimplesRepository.ExecuteInTransactionAsync(async () =>
-				{
-					await _ordemServicoSimplesRepository.Update(entity);
-
-				});
+				return new List<byte[]> { entity.ImgAssinaturaEngenheiro,entity.ImgAssinaturaCliente};
 			}
 			else
 				throw new EntityNotFound("Ordem de Serviço não encontrada");

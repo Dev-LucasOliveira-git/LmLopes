@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using static System.Net.Mime.MediaTypeNames;
 using Microsoft.AspNetCore.Mvc;
 using DTOs.DTOs.Ordem;
+using System.IO;
 
 namespace Application.Services
 {
@@ -28,7 +29,7 @@ namespace Application.Services
 			var OrdemServico = _mapper.Map<OrdemServicoPoco>(OrdemServicoDTO);
 
 			await _ordemServicoDomainService.CadastrarOrdemServico(OrdemServico);
-			
+
 
 			return ResultService.Ok(OrdemServico.IdOrdem);
 
@@ -91,61 +92,49 @@ namespace Application.Services
 
 		}
 
-		public async Task<ResultService> ProcessaAssinaturaClienteOrdemServico(AssinaturaOrdemUploadDTO imagem)
+		public async Task<ResultService> ProcessaAssinaturasOrdemServico(AssinaturaOrdemUploadDTO imagem)
 		{
-			if (imagem.ImgForm == null || imagem.ImgForm.Length == 0)
+			if (imagem.ImgAssinaturaEngenheiro == null || imagem.ImgAssinaturaCliente == null || imagem.ImgAssinaturaCliente.Length == 0 || imagem.ImgAssinaturaEngenheiro.Length == 0)
 			{
-				throw new ArgumentNullException("Imagem não pode ser vazia");
+				throw new ArgumentNullException("Uma ou mais assinaturas são inválidas");
+			}
+
+			var imagensBytes = new List<byte[]>();
+
+			// Converte cada imagem em byte[] e adiciona na lista
+
+			using (var memoryStream = new MemoryStream())
+			{
+				await imagem.ImgAssinaturaCliente.CopyToAsync(memoryStream);
+				imagensBytes.Add(memoryStream.ToArray());
 			}
 
 			using (var memoryStream = new MemoryStream())
 			{
-				await imagem.ImgForm.CopyToAsync(memoryStream);
-				await _ordemServicoDomainService.ProcessaAssinaturaClienteOrdem(imagem.IdOrdem, memoryStream.ToArray());
-
+				await imagem.ImgAssinaturaEngenheiro.CopyToAsync(memoryStream);
+				imagensBytes.Add(memoryStream.ToArray());
 			}
+
+			// Passa todas as imagens ao mesmo tempo
+			await _ordemServicoDomainService.ProcessaAssinaturasOrdem(imagem.IdOrdem, imagensBytes);
 			return ResultService.Ok();
 
 		}
 
-		public async Task<ResultService> ProcessaAssinaturaEngenheiroOrdemServico(AssinaturaOrdemUploadDTO imagem)
+		public async Task<ResultService> GetAssinaturasOrdemServico(int idOrdemServico)
 		{
-			if (imagem.ImgForm == null || imagem.ImgForm.Length == 0)
-			{
-				throw new ArgumentNullException("Imagem não pode ser vazia");
-			}
-
-			using (var memoryStream = new MemoryStream())
-			{
-				await imagem.ImgForm.CopyToAsync(memoryStream);
-				await _ordemServicoDomainService.ProcessaAssinaturaClienteOrdem(imagem.IdOrdem, memoryStream.ToArray());
-
-			}
-			return ResultService.Ok();
-
-		}
-
-		public async Task<byte[]?> GetClienteAssinaturaOrdemServico(int idOrdemServico)
-		{
-			var ordemServicoPoco = await _ordemServicoDomainService.GetOrdemServico(idOrdemServico);
-
-			
-			// Retorna o arquivo de imagem como um FileStreamResult com o tipo correto
-			return ordemServicoPoco.ImgAssinaturaCliente;
-
-			//return ResultService.Ok();
-
-		}
-
-		public async Task<byte[]?> GetEngenheiroAssinaturaOrdemServico(int idOrdemServico)
-		{
-			var ordemServicoPoco = await _ordemServicoDomainService.GetOrdemServico(idOrdemServico);
-
+			var assinaturasOrdem = await _ordemServicoDomainService.GetAssinaturasOrdem(idOrdemServico);
 
 			// Retorna o arquivo de imagem como um FileStreamResult com o tipo correto
-			return ordemServicoPoco.ImgAssinaturaEngenheiro;
 
-			//return ResultService.Ok();
+			var result = new AssinaturasOrdemDTO()
+			{
+				ImgAssinaturaEngenheiro = Convert.ToBase64String(assinaturasOrdem[0]),
+				ImgAssinaturaCliente = Convert.ToBase64String(assinaturasOrdem[1])
+
+			};
+
+			return ResultService.Ok(result);
 
 		}
 	}

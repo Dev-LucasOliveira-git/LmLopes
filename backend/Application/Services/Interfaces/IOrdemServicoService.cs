@@ -12,10 +12,8 @@ namespace Application.Services.Interfaces
 		Task<ResultService> GetAll();
 		Task<ResultService> GetAllSimples();
 		Task <ResultService> AtualizarOrdemServico(OrdemServicoSimplesDTO ordemServicoDTO);
-		Task <ResultService>ProcessaAssinaturaClienteOrdemServico(AssinaturaOrdemUploadDTO imagem);
-		Task<ResultService> ProcessaAssinaturaEngenheiroOrdemServico(AssinaturaOrdemUploadDTO imagem);
-		Task<byte[]?> GetClienteAssinaturaOrdemServico(int idOrdemServico);
-		Task<byte[]?> GetEngenheiroAssinaturaOrdemServico(int idOrdemServico);
+		Task <ResultService>ProcessaAssinaturasOrdemServico(AssinaturaOrdemUploadDTO imagem);
+		Task<ResultService> GetAssinaturasOrdemServico(int idOrdemServico);
 
 
 	}
