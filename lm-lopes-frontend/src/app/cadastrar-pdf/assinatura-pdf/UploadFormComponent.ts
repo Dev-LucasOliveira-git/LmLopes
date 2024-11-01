@@ -67,29 +67,47 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
   }
 
   savePad() {
-    // Salva a assinatura do engenheiro
+    let engineerBlob: Blob | null = null;
+    let clientBlob: Blob | null = null;
+  
     if (!this.engineerSignaturePad.isEmpty()) {
-      const engineerBlob = this.getSignatureBlob(this.engineerSignaturePad);
-      if (engineerBlob.size > 0) {
-        this.uploadSignature(engineerBlob, 'http://localhost:5150/api/OrdemServico/assinatura/engenheiro');
-      } else {
+      engineerBlob = this.getSignatureBlob(this.engineerSignaturePad);
+      if (engineerBlob.size === 0) {
         console.warn('Falha ao criar o blob para a assinatura do engenheiro.');
+        engineerBlob = null;
       }
     } else {
       console.warn('A assinatura do engenheiro é necessária antes de salvar.');
     }
   
-    // Salva a assinatura do cliente
     if (!this.clientSignaturePad.isEmpty()) {
-      const clientBlob = this.getSignatureBlob(this.clientSignaturePad);
-      if (clientBlob.size > 0) { 
-        this.uploadSignature(clientBlob, 'http://localhost:5150/api/OrdemServico/assinatura/cliente');
-      } else {
+      clientBlob = this.getSignatureBlob(this.clientSignaturePad);
+      if (clientBlob.size === 0) {
         console.warn('Falha ao criar o blob para a assinatura do cliente.');
+        clientBlob = null;
       }
     } else {
       console.warn('A assinatura do cliente é necessária antes de salvar.');
     }
+  
+    // Se ambas as assinaturas estiverem presentes, faça o upload em uma única requisição
+    if (engineerBlob && clientBlob) {
+      this.uploadCombinedSignatures(engineerBlob, clientBlob);
+    } else {
+      console.warn('Assinatura(s) faltando. Certifique-se de que ambas as assinaturas estão presentes antes de salvar.');
+    }
+  }
+  
+  private uploadCombinedSignatures(engineerBlob: Blob, clientBlob: Blob) {
+    const formData = new FormData();
+    formData.append('IdOrdem', this.idOrdem);
+    formData.append('ImgAssinaturaCliente', engineerBlob, 'signature_engenheiro.png');
+    formData.append('ImgAssinaturaEngenheiro', clientBlob, 'signature_cliente.png');
+  
+    this.http.post('http://localhost:5150/api/OrdemServico/assinaturas', formData, { headers: this.getAuthHeaders() }).subscribe(
+      (response) => console.log('Upload bem-sucedido!', response),
+      (error) => console.error('Erro no upload', error)
+    );
   }
   
   private getSignatureBlob(signaturePad: SignaturePad): Blob {
@@ -108,25 +126,15 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
   }
   
   
-  private uploadSignature(blob: Blob, url: string) {
-    const formData = new FormData();
-    formData.append('IdOrdem', this.idOrdem);
-    formData.append('ImgForm', blob, 'signature.png');
-  
-    this.http.post(url, formData, { headers: this.getAuthHeaders() }).subscribe(
-      (response) => console.log('Upload bem-sucedido!', response),
-      (error) => console.error('Erro no upload', error)
-    );
-  }
-  
-  
 
 
   onSubmit() {
     if (this.uploadForm.valid && this.selectedFile) {
       const formData = new FormData();
       formData.append('IdOrdem', this.idOrdem);
-      formData.append('ImgForm', this.selectedFile);
+      formData.append('ImgAssinaturaCliente', this.selectedFile);
+      formData.append('ImgAssinaturaEngenheiro', this.selectedFile);
+
 
       this.http.post('http://localhost:5150/api/OrdemServico/assinatura', formData, { headers: this.getAuthHeaders() }).subscribe(
         (response) => console.log('Upload bem-sucedido!', response),
