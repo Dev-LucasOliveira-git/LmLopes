@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import SignaturePad from 'signature_pad';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-upload-form',
@@ -17,6 +17,8 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
   signatureNeeded!: boolean;
   engineerSignaturePad!: SignaturePad;
   clientSignaturePad!: SignaturePad;
+  idOrdem!: string;
+
 
   @ViewChild('engineerCanvas') engineerCanvasEl!: ElementRef;
 @ViewChild('clientCanvas', { static: false }) clientCanvasEl!: ElementRef;
@@ -28,6 +30,7 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private sanitizer: DomSanitizer,
+    public bsModalRef: BsModalRef,
     public modalService: BsModalService
   ) {
     this.uploadForm = this.fb.group({
@@ -37,7 +40,10 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.loadImage(); // Load existing image on component initialization
+    if (this.bsModalRef.content) {
+      this.idOrdem = this.bsModalRef.content.idOrdem;
+    }
+    console.log("aqui", this.idOrdem)
   }
 
   ngAfterViewInit() {
@@ -61,56 +67,65 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
   }
 
   savePad() {
-    const signaturePad = this.step === 'ENG' ? this.engineerSignaturePad : this.clientSignaturePad;
-    if (signaturePad.isEmpty()) {
-      this.signatureNeeded = true;
-      console.warn('A assinatura é necessária antes de salvar.');
-      return;
+    // Salva a assinatura do engenheiro
+    if (!this.engineerSignaturePad.isEmpty()) {
+      const engineerBlob = this.getSignatureBlob(this.engineerSignaturePad);
+      if (engineerBlob.size > 0) {
+        this.uploadSignature(engineerBlob, 'http://localhost:5150/api/OrdemServico/assinatura/engenheiro');
+      } else {
+        console.warn('Falha ao criar o blob para a assinatura do engenheiro.');
+      }
+    } else {
+      console.warn('A assinatura do engenheiro é necessária antes de salvar.');
     }
-    
-    this.signatureNeeded = false;
-    const blob = this.getSignatureBlob(signaturePad);
-    this.uploadSignature(blob);
-
-    this.step = this.step === 'ENG' ? 'CLI' : 'ENG';
+  
+    // Salva a assinatura do cliente
+    if (!this.clientSignaturePad.isEmpty()) {
+      const clientBlob = this.getSignatureBlob(this.clientSignaturePad);
+      if (clientBlob.size > 0) { 
+        this.uploadSignature(clientBlob, 'http://localhost:5150/api/OrdemServico/assinatura/cliente');
+      } else {
+        console.warn('Falha ao criar o blob para a assinatura do cliente.');
+      }
+    } else {
+      console.warn('A assinatura do cliente é necessária antes de salvar.');
+    }
   }
-
+  
   private getSignatureBlob(signaturePad: SignaturePad): Blob {
-    const base64Data = signaturePad.toDataURL().split(',')[1];
+    const dataUrl = signaturePad.toDataURL();
+    
+    if (!dataUrl.startsWith('data:image/png;base64,')) {
+      console.error('Formato de URL de dados inválido para a assinatura.');
+      return new Blob();
+    }
+  
+    const base64Data = dataUrl.split(',')[1];
     const byteCharacters = atob(base64Data);
     const byteNumbers = Array.from(byteCharacters, char => char.charCodeAt(0));
     const byteArray = new Uint8Array(byteNumbers);
     return new Blob([byteArray], { type: 'image/png' });
   }
-
-  private uploadSignature(blob: Blob) {
+  
+  
+  private uploadSignature(blob: Blob, url: string) {
     const formData = new FormData();
-    formData.append('IdOrdem', '3');
+    formData.append('IdOrdem', this.idOrdem);
     formData.append('ImgForm', blob, 'signature.png');
-    
-    this.http.post('http://localhost:5150/api/OrdemServico/assinatura', formData, { headers: this.getAuthHeaders() }).subscribe(
+  
+    this.http.post(url, formData, { headers: this.getAuthHeaders() }).subscribe(
       (response) => console.log('Upload bem-sucedido!', response),
       (error) => console.error('Erro no upload', error)
     );
   }
+  
+  
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      if (!validImageTypes.includes(file.type)) {
-        console.error('Arquivo inválido. Selecione uma imagem (JPEG, PNG, GIF).');
-        return;
-      }
-      this.selectedFile = file;
-      this.uploadForm.patchValue({ image: file });
-    }
-  }
 
   onSubmit() {
     if (this.uploadForm.valid && this.selectedFile) {
       const formData = new FormData();
-      formData.append('IdOrdem', "3");
+      formData.append('IdOrdem', this.idOrdem);
       formData.append('ImgForm', this.selectedFile);
 
       this.http.post('http://localhost:5150/api/OrdemServico/assinatura', formData, { headers: this.getAuthHeaders() }).subscribe(

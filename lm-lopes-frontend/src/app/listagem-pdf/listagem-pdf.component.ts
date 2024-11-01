@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -15,11 +15,12 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
   templateUrl: './listagem-pdf.component.html',
   styleUrls: ['./listagem-pdf.component.css']
 })
-export class ListagemPdfComponent implements OnInit {
+export class ListagemPdfComponent implements OnInit, AfterViewInit {
 
   faDownload = faDownload;
   faPen = faPen
-  imageUrl: any;
+  imageClienteUrl: any;
+  imageEngenheiroUrl: any;
 
   displayedColumns: string[] = ['nomeEngenheiro', 'dataHora', 'equipamento', 'acao', 'editar'];
   dataSource = new MatTableDataSource<any>();
@@ -37,6 +38,9 @@ export class ListagemPdfComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("Component initialized");
+  }
+  ngAfterViewInit():void{
+    console.log("Component view initialized");
     this.carregar();
   }
 
@@ -89,8 +93,8 @@ export class ListagemPdfComponent implements OnInit {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
 
-  loadImage() {
-    this.http.get("http://localhost:5150/api/OrdemServico/assinatura/3", {
+  loadImage(id: number) {
+    this.http.get("http://localhost:5150/api/OrdemServico/assinatura/cliente/" + id, {
       headers: this.getAuthHeaders(),
       responseType: 'blob'
     }).subscribe(
@@ -98,7 +102,20 @@ export class ListagemPdfComponent implements OnInit {
         const reader = new FileReader();
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
-          this.imageUrl = reader.result as string;  // Armazena o base64 da imagem
+          this.imageClienteUrl = reader.result as string; 
+        };
+      },
+      (error) => console.error('Erro ao carregar imagem', error)
+    );
+    this.http.get("http://localhost:5150/api/OrdemServico/assinatura/engenheiro/" + id, {
+      headers: this.getAuthHeaders(),
+      responseType: 'blob'
+    }).subscribe(
+      (blob) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+          this.imageEngenheiroUrl = reader.result as string;  // Armazena o base64 da imagem
         };
       },
       (error) => console.error('Erro ao carregar imagem', error)
@@ -113,7 +130,7 @@ export class ListagemPdfComponent implements OnInit {
   }
 
   async onRowClicked(pdf: any) {
-    this. loadImage()
+    this. loadImage(pdf.idOrdem)
     const doc = new jsPDF();
     const img = new Image();
     img.src = 'assets/logo/logo-lm.png';
@@ -362,12 +379,13 @@ export class ListagemPdfComponent implements OnInit {
              doc.setFont('Helvetica', 'normal');
              doc.text(`Nome: ${pdf.nomeEngenheiro}`, 10, detailsStartY + 7);
              doc.text(`RG / CREA: ${pdf.rg_Crea}`, 10, detailsStartY + 14);
+             doc.addImage(this.imageEngenheiroUrl, 'JPEG', 110, detailsStartY + 21, 30, 10);  // Ajuste o tamanho e posição conforme necessário
              doc.text('Assinatura: _____________________________', 10, detailsStartY + 21);
 
      
              doc.text(`Nome: ${pdf.nomeCliente}`, 110, detailsStartY + 7);
              doc.text(`Cargo: ${pdf.cargoCliente}`, 110, detailsStartY + 14);
-             doc.addImage(this.imageUrl, 'JPEG', 110, detailsStartY + 21, 30, 10);  // Ajuste o tamanho e posição conforme necessário
+             doc.addImage(this.imageClienteUrl, 'JPEG', 110, detailsStartY + 21, 30, 10);  // Ajuste o tamanho e posição conforme necessário
              doc.text(`Assinatura: _____________________________`, 110, detailsStartY + 21);
 
      

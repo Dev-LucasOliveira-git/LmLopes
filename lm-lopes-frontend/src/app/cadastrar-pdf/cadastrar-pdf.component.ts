@@ -179,9 +179,11 @@ export class CadastrarPdfComponent implements OnInit {
     }
   }
 
-  openModalAssinatura() {
-    this.bsModalRef = this.modalService.show(UploadFormComponent);
+  openModalAssinatura(idOrdem: string) {
+    const initialState = { idOrdem };
+    this.bsModalRef = this.modalService.show(UploadFormComponent, { initialState });
   }
+  
   
   }
 
