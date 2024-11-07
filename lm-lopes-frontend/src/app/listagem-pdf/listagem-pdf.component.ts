@@ -370,17 +370,19 @@ export class ListagemPdfComponent implements OnInit, AfterViewInit {
     doc.text('Dados do Engenheiro / Técnico', 10, detailsStartY);
     doc.text('Dados do Cliente', 110, detailsStartY);
 
-    doc.setFont('Helvetica', 'normal');
-    doc.text(`Nome: ${pdf.nomeEngenheiro}`, 10, detailsStartY + 7);
-    doc.text(`RG / CREA: ${pdf.rg_Crea}`, 10, detailsStartY + 14);
-    doc.addImage(this.imageEngenheiroUrl, 'JPEG', 30, detailsStartY + 21, 30, 10);  // Ajuste o tamanho e posição conforme necessário
-    doc.text('Assinatura: _____________________________', 10, detailsStartY + 21);
+// Engineer details and signature
+doc.setFont('Helvetica', 'normal');
+doc.text(`Nome: ${pdf.nomeEngenheiro}`, 10, detailsStartY + 7);
+doc.text(`RG / CREA: ${pdf.rg_Crea}`, 10, detailsStartY + 14);
+doc.text('Assinatura:', 10, detailsStartY + 21);  // Moved down to align with image
+doc.addImage(this.imageClienteUrl, 'JPEG', 30, detailsStartY + 16, 20, 10);  // Adjust position if needed
 
+// Client details and signature
+doc.text(`Nome: ${pdf.nomeCliente}`, 110, detailsStartY + 7);
+doc.text(`Cargo: ${pdf.cargoCliente}`, 110, detailsStartY + 14);
+doc.text('Assinatura:', 110, detailsStartY + 21);  // Moved down to align with image
+doc.addImage(this.imageEngenheiroUrl, 'JPEG', 130, detailsStartY + 16, 20, 10);  // Adjust position if needed
 
-    doc.text(`Nome: ${pdf.nomeCliente}`, 110, detailsStartY + 7);
-    doc.text(`Cargo: ${pdf.cargoCliente}`, 110, detailsStartY + 14);
-    doc.addImage(this.imageClienteUrl, 'JPEG', 130, detailsStartY + 21, 30, 10);  // Ajuste o tamanho e posição conforme necessário
-    doc.text(`Assinatura: _____________________________`, 110, detailsStartY + 21);
 
 
     doc.save(`OS_${pdf.numero}.pdf`);

@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import SignaturePad from 'signature_pad';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-upload-form',
@@ -55,7 +56,7 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
     const canvas = canvasElement.nativeElement;
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    signaturePad.clear(); // Clear previous signature (optional)
+    signaturePad.clear();
   }
 
   clearPad(step: 'ENG' | 'CLI') {
@@ -65,38 +66,42 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
       this.clientSignaturePad.clear();
     }
   }
+  errorMessages: string[] = [];
 
   savePad() {
+    this.errorMessages = [];
     let engineerBlob: Blob | null = null;
     let clientBlob: Blob | null = null;
   
     if (!this.engineerSignaturePad.isEmpty()) {
       engineerBlob = this.getSignatureBlob(this.engineerSignaturePad);
       if (engineerBlob.size === 0) {
-        console.warn('Falha ao criar o blob para a assinatura do engenheiro.');
+        this.errorMessages.push('Falha ao criar o blob para a assinatura do engenheiro.');
         engineerBlob = null;
       }
     } else {
-      console.warn('A assinatura do engenheiro é necessária antes de salvar.');
+      this.errorMessages.push('A assinatura do engenheiro é necessária antes de salvar.');
     }
   
     if (!this.clientSignaturePad.isEmpty()) {
       clientBlob = this.getSignatureBlob(this.clientSignaturePad);
       if (clientBlob.size === 0) {
-        console.warn('Falha ao criar o blob para a assinatura do cliente.');
+        this.errorMessages.push('Falha ao criar o blob para a assinatura do cliente.');
         clientBlob = null;
       }
     } else {
-      console.warn('A assinatura do cliente é necessária antes de salvar.');
+      this.errorMessages.push('A assinatura do cliente é necessária antes de salvar.');
     }
   
-    // Se ambas as assinaturas estiverem presentes, faça o upload em uma única requisição
     if (engineerBlob && clientBlob) {
       this.uploadCombinedSignatures(engineerBlob, clientBlob);
+      Swal.fire('Sucesso!', 'Assinatura Cadastrada com sucesso.', 'success');
+      this.modalService.hide();
     } else {
       console.warn('Assinatura(s) faltando. Certifique-se de que ambas as assinaturas estão presentes antes de salvar.');
     }
   }
+  
   
   private uploadCombinedSignatures(engineerBlob: Blob, clientBlob: Blob) {
     const formData = new FormData();
@@ -126,31 +131,33 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
   }
   
   
-
-
+  selectedFileCliente: File | null = null;
+  selectedFileEngenheiro: File | null = null;
+  
+  onFileSelectedCliente(event: any) {
+    this.selectedFileCliente = event.target.files[0];
+  }
+  
+  onFileSelectedEngenheiro(event: any) {
+    this.selectedFileEngenheiro = event.target.files[0];
+  }
+  
   onSubmit() {
-    if (this.uploadForm.valid && this.selectedFile) {
+    if (this.uploadForm.valid && this.selectedFileCliente && this.selectedFileEngenheiro) {
       const formData = new FormData();
       formData.append('IdOrdem', this.idOrdem);
-      formData.append('ImgAssinaturaCliente', this.selectedFile);
-      formData.append('ImgAssinaturaEngenheiro', this.selectedFile);
-
-
+      formData.append('ImgAssinaturaCliente', this.selectedFileCliente);
+      formData.append('ImgAssinaturaEngenheiro', this.selectedFileEngenheiro);
+  
       this.http.post('http://localhost:5150/api/OrdemServico/assinatura', formData, { headers: this.getAuthHeaders() }).subscribe(
-        (response) => console.log('Upload bem-sucedido!', response),
+        (response) => {
+          console.log('Upload bem-sucedido!', response);
+        },
         (error) => console.error('Erro no upload', error)
       );
+    } else {
+      console.warn('Formulário inválido ou arquivos não selecionados.');
     }
-  }
-
-  loadImage() {
-    this.http.get("http://localhost:5150/api/OrdemServico/assinatura/3", { headers: this.getAuthHeaders(), responseType: 'blob' }).subscribe(
-      (blob) => {
-        const objectURL = URL.createObjectURL(blob);
-        this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-      },
-      (error) => console.error('Erro ao carregar imagem', error)
-    );
   }
 
   getAuthHeaders(): HttpHeaders {

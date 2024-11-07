@@ -35,6 +35,12 @@
   </div>
 </div>
 
+<div *ngIf="errorMessages.length > 0" class="alert alert-danger">
+  <ul>
+    <li *ngFor="let error of errorMessages">{{ error }}</li>
+  </ul>
+</div>
+
 <div class="modal-footer">
   <button class="w-50 btn btn-primary" (click)="savePad()" [disabled]="signatureNeeded">
     Enviar Assinaturas
