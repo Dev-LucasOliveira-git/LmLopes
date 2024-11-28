@@ -51,10 +51,13 @@ namespace Domain.Services
 
 			ordemServico.IdUsuario = await _tokenDomainService.GetIdUsuario();
 
-			var entityOld = _ordemServicoSimplesRepository.GetEntityById(ordemServico.IdOrdem);
+			var entityOld = await _ordemServicoSimplesRepository.GetEntityById(ordemServico.IdOrdem);
 
 			if (entityOld != null)
 			{
+				ordemServico.ImgAssinaturaCliente = entityOld.ImgAssinaturaCliente;
+				ordemServico.ImgAssinaturaEngenheiro = entityOld.ImgAssinaturaEngenheiro;
+
 				await _ordemServicoSimplesRepository.ExecuteInTransactionAsync(async () =>
 				{
 					await _materialUtilizadoRepository.DeleteRangeAsync(x => x.IdOrdemServicoSimples == ordemServico.IdOrdem);										
