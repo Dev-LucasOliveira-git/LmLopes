@@ -31,89 +31,96 @@ export class CadastrarPdfComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initializeForm();
+  
+    if (this.pdfData) {
+      this.patchFormData(this.pdfData.data);
+      this.setupFormForUserType();
+    }
+  }
+  
+  private initializeForm(): void {
     this.cadastroForm = this.fb.group({
       dataHora: [{ value: '', disabled: false }],
       numero: ['',],
       numeroPrisma: ['',],
-      contato: [{ value: '', disabled: false }],
+      contato: ['',],
       telefone: ['',],
       colp: ['',],
       equipamento: ['',],
       endereco: ['',],
       numSerie: ['',],
-      horaInicio: [{ value: '', disabled: false }],
-      horaFim: [{ value: '', disabled: false }],
-      atividade: [{ value: '', disabled: false }],
-      defeito: [{ value: '', disabled: false }],
-      complementoAtividade: [{ value: '', disabled: false }],
-      complementoDefeito: [{ value: '', disabled: false }],
-      limpeza: [{ value: false, disabled: false }],
-      ajuste: [{ value: false, disabled: false }],
-      lubrificacao: [{ value: false, disabled: false }],
-      obs: [{ value: '', disabled: false }],
+      horaInicio: ['',],
+      horaFim: ['',],
+      atividade: ['',],
+      defeito: ['',],
+      complementoAtividade: ['',],
+      complementoDefeito: ['',],
+      limpeza: [false],
+      ajuste: [false],
+      lubrificacao: [false],
+      obs: ['',],
       nomeEngenheiro: ['',],
-      nomeCliente: [{ value: '', disabled: false }],
-      rgCliente: [{ value: '', disabled: false }],
-      cargoCliente: [{ value: '', disabled: false }],
+      nomeCliente: ['',],
+      rgCliente: ['',],
+      cargoCliente: ['',],
       rg_Crea: ['',],
       trabalhoConcluido: ['',],
       materiaisUtilizados: this.fb.array([])
     });
-
-    if (this.pdfData) {
-      const data = this.pdfData.data;
-      this.cadastroForm.patchValue({
-        dataHora: data.dataHora,
-        numero: data.numero,
-        numeroPrisma: data.numeroPrisma,
-        contato: data.contato,
-        telefone: data.telefone,
-        colp: data.colp,
-        equipamento: data.equipamento,
-        endereco: data.endereco,
-        numSerie: data.numSerie,
-        horaInicio: data.horaInicio,
-        horaFim: data.horaFim,
-        atividade: data.atividade,
-        defeito: data.defeito,
-        complementoAtividade: data.complementoAtividade,
-        complementoDefeito: data.complementoDefeito,
-        limpeza: data.limpeza,
-        ajuste: data.ajuste,
-        lubrificacao: data.lubrificacao,
-        obs: data.obs,
-        nomeEngenheiro: data.nomeEngenheiro,
-        nomeCliente: data.nomeCliente,
-        rgCliente: data.rgCliente,
-        cargoCliente: data.cargoCliente,
-        rg_Crea: data.rg_Crea,
-        trabalhoConcluido: data.trabalhoConcluido
+  }
+  
+  private patchFormData(data: any): void {
+    this.cadastroForm.patchValue({
+      dataHora: data.dataHora,
+      numero: data.numero,
+      numeroPrisma: data.numeroPrisma,
+      contato: data.contato,
+      telefone: data.telefone,
+      colp: data.colp,
+      equipamento: data.equipamento,
+      endereco: data.endereco,
+      numSerie: data.numSerie,
+      horaInicio: data.horaInicio,
+      horaFim: data.horaFim,
+      atividade: data.atividade,
+      defeito: data.defeito,
+      complementoAtividade: data.complementoAtividade,
+      complementoDefeito: data.complementoDefeito,
+      limpeza: data.limpeza,
+      ajuste: data.ajuste,
+      lubrificacao: data.lubrificacao,
+      obs: data.obs,
+      nomeEngenheiro: data.nomeEngenheiro,
+      nomeCliente: data.nomeCliente,
+      rgCliente: data.rgCliente,
+      cargoCliente: data.cargoCliente,
+      rg_Crea: data.rg_Crea,
+      trabalhoConcluido: data.trabalhoConcluido
+    });
+  
+    const materiaisUtilizadosArray = this.cadastroForm.get('materiaisUtilizados') as FormArray;
+    data.materiaisUtilizados?.forEach((material: any) => {
+      materiaisUtilizadosArray.push(this.fb.group({
+        descricao: [material.descricao, Validators.required],
+        quantidade: [material.quantidade, Validators.required]
+      }));
+    });
+  }
+  
+  private setupFormForUserType(): void {
+    if (localStorage.getItem('tipoUser') !== 'ADMIN') {
+      const controlsToDisable = [
+        'numero', 'dataHora', 'numeroPrisma', 'contato',
+        'telefone', 'colp', 'equipamento', 'endereco', 'numSerie'
+      ];
+  
+      controlsToDisable.forEach(control => {
+        this.cadastroForm.get(control)?.disable();
       });
-
-      const materiaisUtilizadosArray = this.cadastroForm.get('materiaisUtilizados') as FormArray;
-      data.materiaisUtilizados.forEach((material: any) => {
-        materiaisUtilizadosArray.push(this.fb.group({
-          descricao: [{ value: material.descricao, disabled: true }, Validators.required],
-          quantidade: [{ value: material.quantidade, disabled: true }, Validators.required]
-        }));
-      });
-
-      this.cadastroForm.get('dataHora')?.disable();
-      this.cadastroForm.get('horaInicio')?.disable();
-      this.cadastroForm.get('horaFim')?.disable();
-      this.cadastroForm.get('atividade')?.disable();
-      this.cadastroForm.get('defeito')?.disable();
-      this.cadastroForm.get('complementoAtividade')?.disable();
-      this.cadastroForm.get('complementoDefeito')?.disable();
-      this.cadastroForm.get('limpeza')?.disable();
-      this.cadastroForm.get('ajuste')?.disable();
-      this.cadastroForm.get('lubrificacao')?.disable();
-      this.cadastroForm.get('obs')?.disable();
-      this.cadastroForm.get('nomeCliente')?.disable();
-      this.cadastroForm.get('rgCliente')?.disable();
-      this.cadastroForm.get('cargoCliente')?.disable();
     }
   }
+  
 
   get materiaisUtilizados(): FormArray {
     return this.cadastroForm.get('materiaisUtilizados') as FormArray;

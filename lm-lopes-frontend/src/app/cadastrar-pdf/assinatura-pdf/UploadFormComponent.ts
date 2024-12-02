@@ -5,6 +5,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import SignaturePad from 'signature_pad';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload-form',
@@ -32,7 +33,8 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     public bsModalRef: BsModalRef,
-    public modalService: BsModalService
+    public modalService: BsModalService,
+    private router: Router,
   ) {
     this.uploadForm = this.fb.group({
       title: ['', Validators.required],
@@ -96,6 +98,7 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
     if (engineerBlob && clientBlob) {
       this.uploadCombinedSignatures(engineerBlob, clientBlob);
       Swal.fire('Sucesso!', 'Assinatura Cadastrada com sucesso.', 'success');
+      this.router.navigate(['/cadastrar-pdf']);
       this.modalService.hide();
     } else {
       console.warn('Assinatura(s) faltando. Certifique-se de que ambas as assinaturas estão presentes antes de salvar.');
