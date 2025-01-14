@@ -9,6 +9,15 @@
 </div>
 
 <mat-table [dataSource]="dataSource" matSort>
+  <ng-container matColumnDef="#">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>#</mat-header-cell>
+    <mat-cell *matCellDef="let pdf">{{ pdf.idOrdem }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="numero">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Número</mat-header-cell>
+    <mat-cell *matCellDef="let pdf">{{ pdf.numero }}</mat-cell>
+  </ng-container>
+
   <ng-container matColumnDef="nomeEngenheiro">
     <mat-header-cell *matHeaderCellDef mat-sort-header>Nome do Engenheiro</mat-header-cell>
     <mat-cell *matCellDef="let pdf">{{ pdf.nomeEngenheiro }}</mat-cell>

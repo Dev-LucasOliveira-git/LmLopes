@@ -7,7 +7,7 @@ namespace DTOs.DTOs.OrdemServico
 {
 	public class CadastroOrdemSimplesDTO
 	{
-		public DateTime DataHora { get; set; }
+		public DateTime? DataHora { get; set; }
 		public string? Numero { get; set; }
 		public string? NumeroPrisma { get; set; }
 		public string? Contato { get; set; }

@@ -9,6 +9,7 @@ import jsPDF from 'jspdf';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { environment } from '../../environments/enviroment';
 
 @Component({
   selector: 'app-listagem-pdf',
@@ -22,8 +23,9 @@ export class ListagemPdfComponent implements OnInit, AfterViewInit {
   imageClienteUrl: any;
   imageEngenheiroUrl: any;
 
-  displayedColumns: string[] = ['nomeEngenheiro', 'dataHora', 'equipamento', 'acao', 'editar'];
+  displayedColumns: string[] = ['#','numero','nomeEngenheiro', 'dataHora', 'equipamento', 'acao', 'editar'];
   dataSource = new MatTableDataSource<any>();
+  host = `${environment.API_GATEWAY}`
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -81,28 +83,37 @@ export class ListagemPdfComponent implements OnInit, AfterViewInit {
     }
   }
 
-  formatDateTime(dateString: string | number | Date) {
+  formatOnlyDateHours(dateString: string | number | Date) {
     const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
 
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    return `${hours}:${minutes}:${seconds}`;
+  }
+
+  formatOnlyDate(dateString: string | number | Date) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${day}/${month}/${year}`;
   }
 
   async loadImage(id: number): Promise<void> {
     try {
       const response: any = await this.http.get(
-        `http://localhost:5150/api/OrdemServico/assinaturas/${id}`,
+        `${this.host}/OrdemServico/assinaturas/${id}`,
         { headers: this.getAuthHeaders() }
       ).toPromise();
 
       // Armazena os dados base64 diretamente
-      this.imageEngenheiroUrl = `data:image/jpeg;base64,${response.data.imgAssinaturaEngenheiro}`;
-      this.imageClienteUrl = `data:image/jpeg;base64,${response.data.imgAssinaturaCliente}`;
+      debugger;
+
+      if ('data' in response) {
+        this.imageEngenheiroUrl = `data:image/jpeg;base64,${response.data.imgAssinaturaEngenheiro}`;
+        this.imageClienteUrl = `data:image/jpeg;base64,${response.data.imgAssinaturaCliente}`;
+      }
     } catch (error) {
       console.error('Erro ao carregar assinaturas', error);
     }
@@ -170,7 +181,6 @@ export class ListagemPdfComponent implements OnInit, AfterViewInit {
     doc.text(`Colp: ${pdf.colp}`, 10, textStartY + textLineSpacing);
 
     doc.setFont('Helvetica', 'normal');
-    doc.text(`Data: ${pdf.dataHora}`, rightTextX, textStartY + textLineSpacing);
     doc.text(`Equipamento: ${pdf.equipamento}`, 10, textStartY + textLineSpacing * 2);
     doc.text(`Nº Série: ${pdf.numSerie}`, rightTextX, textStartY + textLineSpacing * 2);
     doc.text(`Endereço: ${pdf.endereco}`, 10, textStartY + textLineSpacing * 3);
@@ -199,9 +209,9 @@ export class ListagemPdfComponent implements OnInit, AfterViewInit {
     doc.text('Início', col2X + 2, tableStartY);
     doc.text('Término', col3X + 2, tableStartY);
 
-    const formattedDataHora = this.formatDateTime(pdf.dataHora);
-    const formattedHoraInicio = this.formatDateTime(pdf.horaInicio);
-    const formattedHoraFim = this.formatDateTime(pdf.horaFim);
+    const formattedDataHora = this.formatOnlyDate(pdf.dataHora);
+    const formattedHoraInicio = this.formatOnlyDateHours(pdf.horaInicio);
+    const formattedHoraFim = this.formatOnlyDateHours(pdf.horaFim);
 
     doc.text(formattedDataHora, col1X + 2, tableStartY + tableLineSpacing);
     doc.text(formattedHoraInicio, col2X + 2, tableStartY + tableLineSpacing);
@@ -361,7 +371,7 @@ export class ListagemPdfComponent implements OnInit, AfterViewInit {
     const conclusionStartY = servicesStartY + servicesLineSpacing * 15;
 
     doc.setFontSize(8);
-    const conclusionText = `( ${pdf.trabalhoConcluido === 'SIM' ? 'X' : ' '} ) Sim  ( ${pdf.trabalhoConcluido === 'NÃO' ? 'X' : ' '} ) Não  ( ${pdf.trabalhoConcluido === 'AGUARDANDO PEÇAS' ? 'X' : ' '} ) Aguardando Peças`;
+    const conclusionText = `( ${pdf.trabalhoConcluido === 'SIM' ? 'X' : ' '} ) Sim  ( ${pdf.trabalhoConcluido === 'NÃO' ? 'X' : ' '} ) Não  ( ${pdf.trabalhoConcluido === 'AGUARDANDO' ? 'X' : ' '} ) Aguardando Peças`;
     doc.setFontSize(10);
     doc.text(`Trabalho Concluído: ${conclusionText}`, 10, conclusionStartY);
     const detailsStartY = conclusionStartY + servicesLineSpacing * 2;
@@ -370,18 +380,20 @@ export class ListagemPdfComponent implements OnInit, AfterViewInit {
     doc.text('Dados do Engenheiro / Técnico', 10, detailsStartY);
     doc.text('Dados do Cliente', 110, detailsStartY);
 
-// Engineer details and signature
-doc.setFont('Helvetica', 'normal');
-doc.text(`Nome: ${pdf.nomeEngenheiro}`, 10, detailsStartY + 7);
-doc.text(`RG / CREA: ${pdf.rg_Crea}`, 10, detailsStartY + 14);
-doc.text('Assinatura:', 10, detailsStartY + 21);  // Moved down to align with image
-doc.addImage(this.imageClienteUrl, 'JPEG', 30, detailsStartY + 16, 20, 10);  // Adjust position if needed
+    // Engineer details and signature
+    doc.setFont('Helvetica', 'normal');
+    doc.text(`Nome: ${pdf.nomeEngenheiro}`, 10, detailsStartY + 7);
+    doc.text(`RG / CREA: ${pdf.rg_Crea}`, 10, detailsStartY + 14);
+    doc.text('Assinatura:', 10, detailsStartY + 21);  // Moved down to align with image
+    if (this.imageClienteUrl != null)
+      doc.addImage(this.imageClienteUrl, 'JPEG', 30, detailsStartY + 16, 20, 10);  // Adjust position if needed
 
-// Client details and signature
-doc.text(`Nome: ${pdf.nomeCliente}`, 110, detailsStartY + 7);
-doc.text(`Cargo: ${pdf.cargoCliente}`, 110, detailsStartY + 14);
-doc.text('Assinatura:', 110, detailsStartY + 21);  // Moved down to align with image
-doc.addImage(this.imageEngenheiroUrl, 'JPEG', 130, detailsStartY + 16, 20, 10);  // Adjust position if needed
+    // Client details and signature
+    doc.text(`Nome: ${pdf.nomeCliente}`, 110, detailsStartY + 7);
+    doc.text(`Cargo: ${pdf.cargoCliente}`, 110, detailsStartY + 14);
+    doc.text('Assinatura:', 110, detailsStartY + 21);  // Moved down to align with image
+    if (this.imageEngenheiroUrl != null)
+      doc.addImage(this.imageEngenheiroUrl, 'JPEG', 130, detailsStartY + 16, 20, 10);  // Adjust position if needed
 
 
 

@@ -127,6 +127,9 @@ namespace Application.Services
 
 			// Retorna o arquivo de imagem como um FileStreamResult com o tipo correto
 
+			if (assinaturasOrdem.All( x => x == null))
+				return ResultService.Ok();
+
 			var result = new AssinaturasOrdemDTO()
 			{
 				ImgAssinaturaEngenheiro = Convert.ToBase64String(assinaturasOrdem[0]),

@@ -72,7 +72,7 @@ export class CadastrarPdfComponent implements OnInit {
   
   private patchFormData(data: any): void {
     this.cadastroForm.patchValue({
-      dataHora: data.dataHora,
+      dataHora:new Date(data.dataHora).toISOString().split('T')[0],
       numero: data.numero,
       numeroPrisma: data.numeroPrisma,
       contato: data.contato,
@@ -157,8 +157,23 @@ export class CadastrarPdfComponent implements OnInit {
 
   onSubmit(): void {
     if (this.cadastroForm.valid) {
+
+
+
+
       if (this.pdfData != null) {
         const updatedFormValue = { ...this.cadastroForm.getRawValue(), idOrdem: this.pdfData.data.idOrdem };
+
+        if (updatedFormValue.dataHora === '') {
+          updatedFormValue.dataHora = null;
+        }
+        if (updatedFormValue.horaInicio === '') {
+          updatedFormValue.horaInicio = null;
+        }
+        if (updatedFormValue.horaFim === '') {
+          updatedFormValue.horaFim = null;
+        }
+
           this.serviceService.editarOrdemServico(updatedFormValue).subscribe(
           response => {
             console.log('Form submitted successfully', response);
@@ -170,7 +185,18 @@ export class CadastrarPdfComponent implements OnInit {
           }
         );
       } else {
-        this.serviceService.cadastrarOrdemServico(this.cadastroForm.value).subscribe(
+        const insertFormValue = { ...this.cadastroForm.getRawValue()};
+
+        if (insertFormValue.dataHora === '') {
+          insertFormValue.dataHora = null;
+        }
+        if (insertFormValue.horaInicio === '') {
+          insertFormValue.horaInicio = null;
+        }
+        if (insertFormValue.horaFim === '') {
+          insertFormValue.horaFim = null;
+        }
+        this.serviceService.cadastrarOrdemServico(insertFormValue).subscribe(
           response => {
             console.log('Form submitted successfully', response);
             this.router.navigate(['/listagem-pdf']);

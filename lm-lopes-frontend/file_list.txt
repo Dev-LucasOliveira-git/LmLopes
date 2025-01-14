@@ -1,0 +1,5 @@
+src/app/cadastrar-pdf/assinatura-pdf/UploadFormComponent.ts
+src/app/cadastrar-pdf/cadastrar-pdf.component.html
+src/app/cadastrar-pdf/cadastrar-pdf.component.ts
+src/app/listagem-pdf/listagem-pdf.component.html
+src/app/listagem-pdf/listagem-pdf.component.ts

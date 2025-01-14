@@ -6,6 +6,7 @@ import SignaturePad from 'signature_pad';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/enviroment';
 
 @Component({
   selector: 'app-upload-form',
@@ -27,6 +28,8 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
   
   signatureImg!: string;
   step: 'ENG' | 'CLI' = 'ENG';
+
+  host = `${environment.API_GATEWAY}`
 
   constructor(
     private fb: FormBuilder,
@@ -112,7 +115,7 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
     formData.append('ImgAssinaturaCliente', engineerBlob, 'signature_engenheiro.png');
     formData.append('ImgAssinaturaEngenheiro', clientBlob, 'signature_cliente.png');
   
-    this.http.post('http://localhost:5150/api/OrdemServico/assinaturas', formData, { headers: this.getAuthHeaders() }).subscribe(
+    this.http.post(`${this.host}/OrdemServico/assinaturas`, formData, { headers: this.getAuthHeaders() }).subscribe(
       (response) => console.log('Upload bem-sucedido!', response),
       (error) => console.error('Erro no upload', error)
     );
@@ -152,7 +155,7 @@ export class UploadFormComponent implements OnInit, AfterViewInit {
       formData.append('ImgAssinaturaCliente', this.selectedFileCliente);
       formData.append('ImgAssinaturaEngenheiro', this.selectedFileEngenheiro);
   
-      this.http.post('http://localhost:5150/api/OrdemServico/assinatura', formData, { headers: this.getAuthHeaders() }).subscribe(
+      this.http.post(`${this.host}/OrdemServico/assinatura`, formData, { headers: this.getAuthHeaders() }).subscribe(
         (response) => {
           console.log('Upload bem-sucedido!', response);
         },
